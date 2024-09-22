@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 import dj_database_url
+
 # from django.conf.global_settings import DATABASES
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -17,7 +18,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['attendance-system-yjung.herokuapp.com',
                  'localhost',
                  '.herokuapp.com',
-                 'attendance-system-yjung-49e6cba2df8d.herokuapp.com',]
+                 'attendance-system-yjung-49e6cba2df8d.herokuapp.com', ]
 
 # Application definition
 
@@ -64,20 +65,24 @@ WSGI_APPLICATION = 'attendance_system.wsgi.application'
 
 # Database configuration (SQLite for development)
 # 기본값은 SQLite (개발 환경용)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(BASE_DIR / 'db.sqlite3'),  # Path 객체를 문자열로 변환
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': str(BASE_DIR / 'db.sqlite3'),  # Path 객체를 문자열로 변환
+        }
     }
-}
-
-# Heroku 환경에서 PostgreSQL 설정
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(
-        conn_max_age=600,
-        ssl_require=True
-    )
-
+else:
+    # Heroku 환경에서 PostgreSQL 설정
+    # Supabase PostgreSQL 설정 (연결 문자열 사용)
+    # 'DATABASE_URL' 환경변수에서 읽어오거나, 위에서 정의한 DATABASE_URL 사용
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
