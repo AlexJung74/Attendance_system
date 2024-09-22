@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,7 +11,7 @@ SECRET_KEY = 'django-insecure-<your-secret-key>'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['attendance-system-yjung.herokuapp.com', 'localhost']
 
 # Application definition
 
@@ -62,6 +63,14 @@ DATABASES = {
     }
 }
 
+# Heroku 환경에서 PostgreSQL 설정으로 변경
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=600,
+        ssl_require=True
+    )
+
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -88,8 +97,9 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files configuration
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'attendance/static']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'attendance', 'static')]
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
