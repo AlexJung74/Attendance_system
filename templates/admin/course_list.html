@@ -1,0 +1,32 @@
+<!-- attendance/templates/attendance/admin/course_list.html -->
+
+{% extends 'attendance/../base.html' %}
+{% load static %}
+{% block title %}Course List{% endblock %}
+
+{% block content %}
+<h2>Course List</h2>
+<a href="{% url 'course-create' %}">Add New Course</a>
+<table>
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for course in courses %}
+        <tr>
+            <td>{{ course.code }}</td>
+            <td>{{ course.name }}</td>
+            <td>
+                <a href="{% url 'course-update' course.pk %}">Edit</a> |
+                <a href="{% url 'course-delete' course.pk %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'course-create' %}">Add New Course</a>
+{% endblock %}

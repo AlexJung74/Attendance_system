@@ -1,0 +1,14 @@
+<!-- attendance/admin/upload_student.html -->
+
+{% extends 'attendance/../base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h2>Upload Student Excel</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="student_file" required>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'attendance/../base.html' %}
+{% load static %}
+{% block title %}Semester List{% endblock %}
+{% block content %}
+<h2>Semester List</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Year</th>
+            <th>Semester</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for semester in semesters %}
+        <tr>
+            <td>{{ semester.year }}</td>
+            <td>{{ semester.semester }}</td>
+            <td>
+                <a href="{% url 'semester-update' semester.pk %}">Edit</a>
+                <a href="{% url 'semester-delete' semester.pk %}">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'semester-create' %}">Add New Semester</a>
+{% endblock %}

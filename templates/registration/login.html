@@ -1,0 +1,19 @@
+<!-- attendance/templates/attendance/login.html -->
+{% extends 'attendance/../base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <h2>Login</h2>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn login-btn">Login</button>
+    </form>
+    {% if form.errors %}
+        <p class="error">Invalid username or password</p>
+    {% endif %}
+</div>
+{% endblock %}

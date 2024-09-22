@@ -1,0 +1,23 @@
+{% extends 'attendance/../base.html' %}
+{% load static %}
+{% block title %}Upload Students Excel{% endblock %}
+{% block content %}
+<div class="container">
+    <h2>Upload Students Excel</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="student_file">Select Excel File:</label>
+            <input type="file" name="student_file" id="student_file" class="form-control" accept=".xlsx, .xls" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+<!-- attendance/templates/attendance/admin/student_form.html -->
+
+{% extends 'attendance/../base.html' %}
+{% load static %}
+{% block title %}Add/Edit Student{% endblock %}
+
+{% block content %}
+<h2>{% if object %}Edit{% else %}Add{% endif %} Student</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+<a href="{% url 'student-list' %}">Back to Student List</a>
+{% endblock %}

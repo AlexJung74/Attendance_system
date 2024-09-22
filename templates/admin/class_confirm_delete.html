@@ -1,0 +1,15 @@
+<!-- attendance/templates/attendance/admin/class_confirm_delete.html -->
+
+{% extends 'attendance/../base.html' %}
+{% load static %}
+{% block title %}Delete Class{% endblock %}
+
+{% block content %}
+<h2>Delete Class</h2>
+<p>Are you sure you want to delete the class <strong>{{ object.course.name }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+    <a href="{% url 'class-list' %}">Cancel</a>
+</form>
+{% endblock %}

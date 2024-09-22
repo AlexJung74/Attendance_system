@@ -1,0 +1,14 @@
+<!-- attendance/templates/attendance/common/messages.html -->
+
+{% load static %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                <div class="message-content">
+                    {{ message }}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

@@ -1,0 +1,36 @@
+<!-- attendance/templates/attendance/lecturer/attendance_list.html -->
+
+{% extends 'attendance/../base.html' %}
+{% load static %}
+{% block title %}Attendance List{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Attendance List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Class</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attendance in attendances %}
+            <tr>
+                <td>{{ attendance.student.user.get_full_name }}</td>
+                <td>{{ attendance.class_instance }}</td>
+                <td>{{ attendance.date }}</td>
+                <td>{{ attendance.get_status_display }}</td> <!-- get_status_display로 선택지의 실제 이름 표시 -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- 이메일 전송 버튼 -->
+    <form method="post" action="{% url 'send_attendance_warning' student.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning">Send Attendance Warning</button>
+    </form>
+</div>
+{% endblock %}

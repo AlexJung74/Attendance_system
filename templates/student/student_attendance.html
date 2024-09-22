@@ -1,0 +1,35 @@
+<!-- attendance/templates/attendance/lecturer/student_attendance.html -->
+
+{% extends 'attendance/../base.html' %}
+{% block title %}My Attendance{% endblock %}
+{% block content %}
+<h2>My Attendance</h2>
+{% if student %}
+    <form method="get">
+        <label for="class-filter">Filter by Class:</label>
+        <select id="class-filter" name="class">
+            <option value="">All</option>
+            {% for class in student.class_set.all %}
+                <option value="{{ class.pk }}">{{ class.course.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn">Filter</button>
+    </form>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Class</th>
+            <th>Status</th>
+        </tr>
+        {% for attendance in student.attendance_set.all %}
+        <tr>
+            <td>{{ attendance.date }}</td>
+            <td>{{ attendance.class_obj.course.name }}</td>
+            <td>{{ attendance.status }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>You are not associated with a student account. Please contact the administrator.</p>
+{% endif %}
+{% endblock %}

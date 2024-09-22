@@ -1,0 +1,15 @@
+<!-- attendance/templates/attendance/admin/semester_confirm_delete.html -->
+
+{% extends 'attendance/../base.html' %}
+{% load static %}
+{% block title %}Delete Semester{% endblock %}
+
+{% block content %}
+<h2>Delete Semester</h2>
+<p>Are you sure you want to delete the semester <strong>{{ object.year }} {{ object.semester }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+    <a href="{% url 'semester-list' %}">Cancel</a>
+</form>
+{% endblock %}

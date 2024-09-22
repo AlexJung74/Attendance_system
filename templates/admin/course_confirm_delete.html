@@ -1,0 +1,15 @@
+<!-- attendance/templates/attendance/admin/course_confirm_delete.html -->
+
+{% extends 'attendance/../base.html' %}
+{% load static %}
+{% block title %}Delete Course{% endblock %}
+
+{% block content %}
+<h2>Delete Course</h2>
+<p>Are you sure you want to delete the course <strong>{{ object.name }}</strong>?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+    <a href="{% url 'course-list' %}">Cancel</a>
+</form>
+{% endblock %}
