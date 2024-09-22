@@ -1,17 +1,23 @@
 import os
 from pathlib import Path
 import dj_database_url
+# from django.conf.global_settings import DATABASES
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-<your-secret-key>'
+# SECRET_KEY = 'django-insecure-<your-secret-key>'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-<your-secret-key>')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['attendance-system-yjung.herokuapp.com', 'localhost']
+# 모든 herokuapp 서브 도메인 허용
+ALLOWED_HOSTS = ['attendance-system-yjung.herokuapp.com',
+                 'localhost',
+                 '.herokuapp.com',
+                 'attendance-system-yjung-49e6cba2df8d.herokuapp.com',]
 
 # Application definition
 
@@ -27,6 +33,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -56,14 +63,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'attendance_system.wsgi.application'
 
 # Database configuration (SQLite for development)
+# 기본값은 SQLite (개발 환경용)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),  # Path 객체를 문자열로 변환
     }
 }
 
-# Heroku 환경에서 PostgreSQL 설정으로 변경
+# Heroku 환경에서 PostgreSQL 설정
 if 'DATABASE_URL' in os.environ:
     DATABASES['default'] = dj_database_url.config(
         conn_max_age=600,
