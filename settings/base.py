@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from decouple import config
 
 # Load environment variables from .env file (optional)
 from dotenv import load_dotenv
@@ -10,7 +11,8 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-(w2h!&e2sep24fl$587x%@85aq8!v@w!m06+z)j+=30g_at0rm'
+# SECRET_KEY = 'django-insecure-(w2h!&e2sep24fl$587x%@85aq8!v@w!m06+z)j+=30g_at0rm'
+SECRET_KEY = config('SECRET_KEY')
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
 
@@ -103,8 +105,8 @@ LOGIN_URL = 'login'  # 로그인 페이지 URL
 LOGOUT_REDIRECT_URL = 'login'  # 로그아웃 후 리디렉션될 URL
 
 # DEBUG 설정 (기본적으로 개발 환경에서는 True)
-# DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-DEBUG = os.environ.get('DEBUG', 'True').lower() in ['true', '1']
+DEBUG = False
+# DEBUG = os.environ.get('DEBUG', 'True').lower() in ['true', '1']
 
 # 로그 디렉토리와 파일 설정
 LOG_FILE = os.path.join(BASE_DIR, 'debug.log')
