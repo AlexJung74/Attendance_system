@@ -1,9 +1,12 @@
-# attendance/management/commands/generate_initial_data.py
+# models.py (변경 없음)
+# 주어진 모델은 적절하게 설정되어 있으며 변경 없이 사용 가능합니다.
+
+# attendance/management/commands/generate_initial_data.py (수정된 부분 포함)
 
 import random
 from datetime import date, timedelta
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.management.base import BaseCommand
 
 from attendance.models import Lecturer, Student, Course, Semester, Class, CollegeDay, ClassStudent
@@ -13,6 +16,7 @@ class Command(BaseCommand):
     help = 'Generate initial data for the Attendance system.'
 
     def handle(self, *args, **options):
+        self.create_groups()
         self.create_users()
         self.create_courses()
         self.create_semesters()
@@ -21,9 +25,15 @@ class Command(BaseCommand):
         self.assign_students_to_classes()
         self.stdout.write(self.style.SUCCESS('Initial data generated successfully.'))
 
+    def create_groups(self):
+        # 그룹 생성
+        groups = ['Admin', 'Lecturers', 'Students']
+        for group in groups:
+            Group.objects.get_or_create(name=group)
+
     def create_users(self):
         # 사용자 비밀번호 (평문으로 설정)
-        default_password = "password123"
+        default_password = "asdd1233"
 
         # 일반적으로 사용되는 이름
         first_names = [
@@ -35,15 +45,21 @@ class Command(BaseCommand):
             'Anderson', 'Thomas', 'Jackson', 'White', 'Harris', 'Martin', 'Thompson', 'Garcia', 'Martinez', 'Robinson'
         ]
 
+        # 관리자 그룹 가져오기
+        admin_group = Group.objects.get(name='Admin')
+        lecturer_group = Group.objects.get(name='Lecturers')
+        student_group = Group.objects.get(name='Students')
+
         # 관리자 생성
         if not User.objects.filter(username='admin').exists():
-            User.objects.create_superuser(
+            admin_user = User.objects.create_superuser(
                 username='admin',
-                password='adminpass123',
-                email='admin@example.com',
+                password='asdd1233',
+                email='zend74@gmail.com',
                 first_name='Admin',
                 last_name='User'
             )
+            admin_user.groups.add(admin_group)
 
         # 강사 생성
         for i in range(1, 7):
@@ -59,6 +75,8 @@ class Command(BaseCommand):
                     first_name=first_name,
                     last_name=last_name
                 )
+                # 강사 그룹에 추가
+                user.groups.add(lecturer_group)
                 Lecturer.objects.create(user=user, staff_id=staff_id, DOB='1980-01-01')
 
         # 학생 생성
@@ -75,6 +93,8 @@ class Command(BaseCommand):
                     first_name=first_name,
                     last_name=last_name
                 )
+                # 학생 그룹에 추가
+                user.groups.add(student_group)
                 Student.objects.create(user=user, student_id=student_id, DOB='2000-01-01')
 
     def create_courses(self):
@@ -124,12 +144,6 @@ class Command(BaseCommand):
             else:
                 start_date = date(class_instance.semester.year, 8, 1)
                 end_date = date(class_instance.semester.year, 11, 30)
-
-            # current_date = start_date
-            # while current_date <= end_date:
-            #     if current_date.weekday() < 5:  # Monday to Friday
-            #         CollegeDay.objects.get_or_create(date=current_date, class_instance=class_instance)
-            #     current_date += timedelta(days=1)
 
             current_date = start_date
             while current_date <= end_date:
