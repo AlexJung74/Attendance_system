@@ -1,0 +1,38 @@
+<!-- attendance/templates/attendance/class_list_content.html -->
+
+{% load static %}
+<div class="container">
+    <h2>{{ title }}</h2> <!-- 뷰에서 title을 context로 넘겨줍니다. -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Course</th>
+                <th>Semester</th>
+                <th>Lecturer</th>
+                <th>Details</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for class_instance in classes %}
+            <tr>
+                <td>{{ class_instance.number }}</td>
+                <td>{{ class_instance.course.name }}</td>
+                <td>{{ class_instance.semester.year }} {{ class_instance.semester.semester }}</td>
+                <td>{{ class_instance.lecturer.user.get_full_name }}</td>
+                <td><a href="{% url 'class-detail' class_instance.pk %}" class="btn btn-primary">View</a></td>
+                <td>
+                    {% if user.is_superuser or user == class_instance.lecturer.user %}
+                        <a href="{% url 'attendance-check' class_instance_id=class_instance.pk %}" class="btn btn-secondary">Check Attendance</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No classes available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

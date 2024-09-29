@@ -1,32 +1,37 @@
-<!-- attendance/templates/attendance/admin/course_list.html -->
+<!-- attendance/templates/admin/course_list.html -->
 
-{% extends 'attendance/../base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title %}Course List{% endblock %}
 
 {% block content %}
-<h2>Course List</h2>
-<a href="{% url 'course-create' %}">Add New Course</a>
-<table>
-    <thead>
-        <tr>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for course in courses %}
-        <tr>
-            <td>{{ course.code }}</td>
-            <td>{{ course.name }}</td>
-            <td>
-                <a href="{% url 'course-update' course.pk %}">Edit</a> |
-                <a href="{% url 'course-delete' course.pk %}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<a href="{% url 'course-create' %}">Add New Course</a>
+<div class="container">
+    <h2 class="mb-4">Course List</h2>
+    <a href="{% url 'course-create' %}" class="btn btn-success mb-3">Add New Course</a> <!-- "Add New Class"에서 "Add New Course"로 변경 -->
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Actions</th> <!-- Actions 컬럼 추가 -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.code }}</td>
+                <td>{{ course.name }}</td>
+                <td>
+                    <a href="{% url 'course-update' course.id %}" class="btn btn-secondary btn-sm">Edit</a>
+                    <a href="{% url 'course-delete' course.id %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No courses available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

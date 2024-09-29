@@ -1,0 +1,11 @@
+[
+  {
+    "model": "attendance.lecturer",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "staff_id": "L001",
+      "DOB": "1980-01-01"
+    }
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "model": "attendance.attendance",
+    "pk": 1,
+    "fields": {
+      "student": 1,
+      "class_instance": 1,
+      "date": "2024-09-19",
+      "status": "P"
+    }
+  },
+  {
+    "model": "attendance.attendance",
+    "pk": 2,
+    "fields": {
+      "student": 1,
+      "class_instance": 2,
+      "date": "2024-09-20",
+      "status": "A"
+    }
+  }
+]

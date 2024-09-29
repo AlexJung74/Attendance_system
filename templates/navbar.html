@@ -1,28 +1,53 @@
-{% load static %}
-<nav class="navbar">
-    <ul class="navbar-menu">
-        {% if user.is_authenticated %}
-            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li><a href="{% url 'semester-list' %}">Semesters</a></li>
-            <li><a href="{% url 'course-list' %}">Courses</a></li>
-            {% if user.is_superuser %}
-                <!-- 관리자용 클래스 목록 링크 -->
-                <li><a href="{% url 'admin-class-list' %}">Classes</a></li>
-                <li><a href="{% url 'lecturer-list' %}">Lecturers</a></li>
-                <li><a href="{% url 'student-list' %}">Students</a></li>
-            {% elif user == class.lecturer.user %}
-                <!-- 강사용 클래스 목록 링크 -->
-                <li><a href="{% url 'lecturer-class-list' %}">My Classes</a></li>
-                <li><a href="{% url 'student-attendance' %}">My Attendance</a></li>
-            {% endif %}
-            <li>
-                <form action="{% url 'logout' %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn logout-btn">Logout</button>
-                </form>
-            </li>
-        {% else %}
-            <li><a href="{% url 'login' %}" class="btn login-btn">Login</a></li>
+<!-- attendance/templates/navbar.html -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="{% url 'dashboard' %}">Attendance System</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" 
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav me-auto">
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+        </li>
+        {% if user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'class-list' %}">Classes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'lecturer-list' %}">Lecturers</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'student-list' %}">Students</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'course-list' %}">Courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'semester-list' %}">Semesters</a>
+          </li>
         {% endif %}
+      {% endif %}
     </ul>
+    <ul class="navbar-nav ms-auto">
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+          <span class="navbar-text me-3">Logged in as {{ user.get_full_name }}</span>
+        </li>
+        <li class="nav-item">
+          <!-- 로그아웃을 POST 요청으로 처리하는 폼 -->
+          <form method="post" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button class="logout-btn" style="display: inline; cursor: pointer;"> Logout </button>
+          </form>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">Login</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
 </nav>

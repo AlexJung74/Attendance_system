@@ -1,23 +1,20 @@
-{% extends 'attendance/../base.html' %}
+<!-- attendance/templates/attendance/admin/upload_students_excel.html -->
+
+{% extends 'base.html' %}
 {% load static %}
-{% block title %}Upload Students Excel{% endblock %}
+{% block title %}Upload Students{% endblock %}
+
 {% block content %}
 <div class="container">
-    <h2>Upload Students Excel</h2>
-    <form method="post" enctype="multipart/form-data">
+    <h2 class="mb-4">Upload Students via Excel</h2>
+    <form method="post" enctype="multipart/form-data" class="mb-3">
         {% csrf_token %}
         <div class="form-group">
             <label for="student_file">Select Excel File:</label>
-            <input type="file" name="student_file" id="student_file" class="form-control" accept=".xlsx, .xls" required>
+            <input type="file" name="student_file" id="student_file" class="form-control-file" accept=".xlsx, .xls" required>
         </div>
         <button type="submit" class="btn btn-primary">Upload</button>
     </form>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <a href="{% url 'class-list' %}" class="btn btn-secondary">Back to Class List</a>
 </div>
 {% endblock %}

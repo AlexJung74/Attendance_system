@@ -1,0 +1,18 @@
+[
+  {
+    "model": "attendance.course",
+    "pk": 1,
+    "fields": {
+      "code": "C001",
+      "name": "Introduction to Python"
+    }
+  },
+  {
+    "model": "attendance.course",
+    "pk": 2,
+    "fields": {
+      "code": "C002",
+      "name": "Advanced Django"
+    }
+  }
+]

@@ -1,34 +1,65 @@
-{% extends 'attendance/../base.html' %}
+<!-- attendance/templates/attendance/admin/admin_dashboard.html -->
+
+{% extends 'base.html' %}
 {% load static %}
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h1>Admin Dashboard</h1>
+    <h1 class="mb-4">Admin Dashboard</h1>
     <p>Welcome, {{ user.username }}! This is the admin dashboard.</p>
-    <div class="admin-buttons">
-        <a href="{% url 'semester-list' %}" class="btn">Manage Semesters</a>
-        <a href="{% url 'course-list' %}" class="btn">Manage Courses</a>
-        <a href="{% url 'admin-class-list' %}" class="btn">Manage Classes</a>
-        <a href="{% url 'lecturer-list' %}" class="btn">Manage Lecturers</a>
-        <a href="{% url 'student-list' %}" class="btn">Manage Students</a>
-        <a href="{% url 'upload-students-excel' %}">Upload Student Info</a>
+    <div class="admin-buttons mb-4">
+        <a href="{% url 'semester-list' %}" class="btn btn-primary btn-lg">Manage Semesters</a>
+        <a href="{% url 'course-list' %}" class="btn btn-success btn-lg">Manage Courses</a>
+        <a href="{% url 'admin-class-list' %}" class="btn btn-info btn-lg">Manage Classes</a>
+        <a href="{% url 'lecturer-list' %}" class="btn btn-warning btn-lg">Manage Lecturers</a>
+        <a href="{% url 'student-list' %}" class="btn btn-danger btn-lg">Manage Students</a>
+        <a href="{% url 'upload-students-excel' %}" class="btn btn-secondary btn-lg">Upload Student Info</a>
     </div>
-    <div class="admin-buttons">
-        {% for class in classes %}
-            <a href="{% url 'attendance-check' class.id %}" class="btn">Check Attendance for {{ class.course.name }}</a>
-        {% endfor %}
-    </div>
-    <!-- 이메일 경고 전송 -->
-    {% for student in students %}
-        {% if student.id %}
-            <form method="post" action="{% url 'send_attendance_warning' student.id %}">
+
+    <div class="card">
+        <div class="card-header">
+            Check Attendance
+        </div>
+        <div class="card-body">
+            <form method="post" action="{% url 'select-attendance' %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-warning">Send Attendance Warning</button>
+                <div class="form-group">
+                    <label for="semester">Select Semester:</label>
+                    <select name="semester" id="semester" class="form-control" required>
+                        <option value="">-- Select Semester --</option>
+                        {% for semester in semesters %}
+                            <option value="{{ semester.id }}"
+                                {% if semester.id == selected_semester %}
+                                    selected
+                                {% endif %}>
+                                {{ semester.year }} {{ semester.semester }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="course">Select Course:</label>
+                    <select name="course" id="course" class="form-control" required>
+                        <option value="">-- Select Course --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="class">Select Class:</label>
+                    <select name="class_number" id="class" class="form-control" required>
+                        <option value="">-- Select Class --</option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Check Attendance</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetSelection()">Reset</button>
+                </div>
             </form>
-        {% else %}
-            <p>Invalid student ID</p> <!-- student.id가 None인 경우 처리 -->
-        {% endif %}
-    {% endfor %}
+        </div>
+    </div>
 </div>
+
 {% endblock %}

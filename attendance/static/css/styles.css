@@ -1,18 +1,17 @@
-/* attendance/static/css/style.css */
-
-/* Global Styles */
+/* Global Styles: Basic styling for body and container */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #efe4e4;
     margin: 0;
     padding: 0;
 }
 
+/* Container: Centered box with shadow */
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #ffffff;
+    background-color: #f6f7fa;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -20,7 +19,7 @@ h1, h2 {
     color: #333333;
 }
 
-/* Table Styles */
+/* Table Styles: Basic table structure with border and padding */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -37,10 +36,10 @@ th {
     background-color: #f2f2f2;
 }
 
-/* Button Styles */
+/* Button Styles: Primary buttons with transition effect */
 button, .btn {
     background-color: #4CAF50;
-    color: white;
+    color: #070707;
     padding: 10px 15px;
     text-align: center;
     text-decoration: none;
@@ -56,6 +55,7 @@ button:hover, .btn:hover {
     background-color: #45a049;
 }
 
+/* Primary Button Styles */
 .btn-primary {
     background-color: #007bff;
 }
@@ -64,26 +64,36 @@ button:hover, .btn:hover {
     background-color: #0056b3;
 }
 
+/* Login and Logout Button Styles */
 .login-btn {
-    background-color: #007bff;  /* 파란색 로그인 버튼 */
+    background-color: #007bff;  /* Blue Login Button */
 }
 
 .login-btn:hover {
-    background-color: #0056b3;  /* 호버 시 색상 변경 */
+    background-color: #0056b3;  /* Hover effect */
 }
 
 .logout-btn {
-    background-color: #f44336;  /* 빨간색 로그아웃 버튼 */
+    background-color: #f44336;  /* Red Logout Button */
+    cursor: pointer; /* 커서를 포인터로 설정 */
 }
 
 .logout-btn:hover {
-    background-color: #da190b;  /* 호버 시 색상 변경 */
+    background-color: #da190b;  /* Hover effect */
 }
 
-/* Navbar Styles */
+/* Navbar Styles: Dark background with flex layout */
 .navbar {
-    background-color: #333;
+    background-color: #424236; /* 나브바 배경 색상 */
     padding: 10px 20px;
+}
+
+.nav-container {
+    max-width: 1200px; /* 나브바 너비 */
+    margin: 0 auto; /* 가운데 정렬 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .navbar-menu {
@@ -111,11 +121,20 @@ button:hover, .btn:hover {
 }
 
 .navbar-menu a:hover {
-    background-color: #575757;  /* 링크 호버 시 배경색 변경 */
+    background-color: #8a8282;  /* 링크 호버 시 배경색 변경 */
     border-radius: 4px;  /* 둥근 테두리 */
 }
 
-/* Link Styles */
+/* 메인 컨텐츠 영역 스타일 */
+.main-container {
+    max-width: 800px;  /* 최대 너비를 줄여서 컨텐츠 중앙 정렬 */
+    margin: 20px auto;  /* 상하 좌우 중앙 정렬 */
+    padding: 20px;
+    background-color: #ffffff;  /* 배경색: 흰색 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);  /* 그림자 효과 */
+}
+
+/* Link Styles: Underline on hover */
 a {
     text-decoration: none;
     color: #4CAF50;
@@ -125,7 +144,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Admin Buttons */
+/* Admin Buttons: Flexible layout for admin action buttons */
 .admin-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -134,16 +153,16 @@ a:hover {
 }
 
 .admin-buttons .btn {
-    background-color: #4CAF50; /* 녹색 버튼 */
+    background-color: #4CAF50; /* Green buttons */
     padding: 10px 20px;
     text-align: center;
 }
 
 .admin-buttons .btn:hover {
-    background-color: #45a049; /* 호버 시 색상 변경 */
+    background-color: #45a049; /* Hover effect */
 }
 
-/* Message Styles */
+/* Message Styles: Different colors for various message types */
 .messages {
     list-style-type: none;
     padding: 0;

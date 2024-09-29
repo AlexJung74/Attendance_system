@@ -1,18 +1,17 @@
 <!-- attendance/templates/attendance/lecturer/lecturer_dashboard.html -->
 
-{% extends 'attendance/../base.html' %}
+{% extends 'base.html' %}
 {% load static %}
-
 {% block title %}Lecturer Dashboard{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h2>Lecturer Dashboard</h2>
+    <h2 class="mb-4">Lecturer Dashboard</h2>
     <p>Welcome, {{ user.get_full_name }}! Here is your class information.</p>
 
-    <h3>Your Classes</h3>
-    <table class="table">
-        <thead>
+    <h3 class="mb-3">Your Classes</h3>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
             <tr>
                 <th>Number</th>
                 <th>Course</th>
@@ -21,18 +20,18 @@
             </tr>
         </thead>
         <tbody>
-            {% for class in lecturer_classes %}
+            {% for class_instance in lecturer_classes %}
             <tr>
-                <td>{{ class.number }}</td>
-                <td>{{ class.course.name }}</td>
-                <td>{{ class.semester.year }} {{ class.semester.semester }}</td>
+                <td>{{ class_instance.number }}</td>
+                <td>{{ class_instance.course.name }}</td>
+                <td>{{ class_instance.semester.year }} {{ class_instance.semester.semester }}</td>
                 <td>
-                    <a href="{% url 'attendance-check' class.pk %}" class="btn btn-primary">Check Attendance</a>
+                    <a href="{% url 'attendance-check' class_instance_id=class_instance.pk %}" class="btn btn-secondary">Check Attendance</a>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4">No classes available.</td>
+                <td colspan="4" class="text-center">No classes available.</td>
             </tr>
             {% endfor %}
         </tbody>

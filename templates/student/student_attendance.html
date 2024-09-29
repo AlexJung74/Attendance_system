@@ -1,35 +1,56 @@
-<!-- attendance/templates/attendance/lecturer/student_attendance.html -->
+<!-- attendance/templates/attendance/student/student_attendance.html -->
 
-{% extends 'attendance/../base.html' %}
+{% extends 'base.html' %}
+{% load static %}
+
 {% block title %}My Attendance{% endblock %}
+
 {% block content %}
-<h2>My Attendance</h2>
-{% if student %}
-    <form method="get">
-        <label for="class-filter">Filter by Class:</label>
-        <select id="class-filter" name="class">
+<div class="container">
+    <h2 class="mb-4">My Attendance</h2>
+
+    <!-- 메시지 표시 -->
+    {% if messages %}
+        <div class="alert alert-danger">
+            {% for message in messages %}
+                <div>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="get" class="form-inline mb-3">
+        <label for="class-filter" class="mr-2">Filter by Class:</label>
+        <select id="class-filter" name="class" class="form-control mr-2">
             <option value="">All</option>
-            {% for class in student.class_set.all %}
-                <option value="{{ class.pk }}">{{ class.course.name }}</option>
+            {% for class_instance in student.classes.all %}
+                <option value="{{ class_instance.pk }}" {% if class_instance.pk|stringformat:"s" == selected_class %}selected{% endif %}>
+                    {{ class_instance.course.name }}
+                </option>
             {% endfor %}
         </select>
-        <button type="submit" class="btn">Filter</button>
+        <button class="btn btn-primary" >Filter</button>
     </form>
-    <table>
-        <tr>
-            <th>Date</th>
-            <th>Class</th>
-            <th>Status</th>
-        </tr>
-        {% for attendance in student.attendance_set.all %}
-        <tr>
-            <td>{{ attendance.date }}</td>
-            <td>{{ attendance.class_obj.course.name }}</td>
-            <td>{{ attendance.status }}</td>
-        </tr>
-        {% endfor %}
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Date</th>
+                <th>Class</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attendance in attendances %}
+            <tr>
+                <td>{{ attendance.date }}</td>
+                <td>{{ attendance.class_instance.course.name }}</td>
+                <td>{{ attendance.get_status_display }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No attendance records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-{% else %}
-    <p>You are not associated with a student account. Please contact the administrator.</p>
-{% endif %}
+</div>
 {% endblock %}

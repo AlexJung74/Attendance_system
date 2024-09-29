@@ -1,3 +1,5 @@
+# forms.py
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -6,21 +8,21 @@ from .models import Student, Lecturer, Class, Attendance
 
 # 사용자 등록 폼 (기본 Django UserCreationForm 확장)
 class UserRegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)  # 이메일 필드 추가
-    phone_number = forms.CharField(max_length=15, required=False)  # 전화번호 필드 추가
+    email = forms.EmailField(required=True)
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'phone_number', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2']
 
 
 # 학생 정보 생성 및 수정 폼
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ['user', 'student_id', 'DOB', 'classes']  # 관련 필드 정의
+        fields = ['user', 'student_id', 'DOB', 'classes']
         widgets = {
-            'DOB': forms.DateInput(attrs={'type': 'date'}),  # DatePicker 위젯 사용
+            'DOB': forms.DateInput(attrs={'type': 'date'}),
+            'classes': forms.CheckboxSelectMultiple(),
         }
 
 
@@ -38,7 +40,12 @@ class LecturerForm(forms.ModelForm):
 class ClassForm(forms.ModelForm):
     class Meta:
         model = Class
-        fields = ['number', 'course', 'semester', 'lecturer']  # 관련 필드 정의
+        fields = ['number', 'course', 'semester', 'lecturer']
+        widgets = {
+            'semester': forms.Select(),
+            'course': forms.Select(),
+            'lecturer': forms.Select(),
+        }
 
 
 # 출석 정보 수정 폼 (강사 및 관리자가 출석 상태를 변경할 때 사용)

@@ -1,33 +1,35 @@
 <!-- attendance/templates/attendance/admin/lecturer_list.html -->
 
-{% extends 'attendance/../base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title %}Lecturer List{% endblock %}
 
 {% block content %}
-<h2>Lecturer List</h2>
-<a href="{% url 'lecturer-create' %}">Add New Lecturer</a>
-<table>
-    <thead>
-        <tr>
-            <th>Full Name</th>
-            <th>Staff ID</th>
-            <th>Date of Birth</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for lecturer in lecturers %}
-        <tr>
-            <td>{{ lecturer.user.get_full_name }}</td>
-            <td>{{ lecturer.staff_id }}</td>
-            <td>{{ lecturer.DOB }}</td>
-            <td>
-                <a href="{% url 'lecturer-update' lecturer.pk %}">Edit</a> |
-                <a href="{% url 'lecturer-delete' lecturer.pk %}">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="container">
+        <h2>Lecturer List</h2>
+        <a href="{% url 'lecturer-create' %}">Add New Lecturer</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Staff ID</th>
+                    <th>Date of Birth</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for lecturer in lecturers %}
+                    <tr>
+                        <td>{{ lecturer.user.get_full_name }}</td>
+                        <td>{{ lecturer.staff_id }}</td>
+                        <td>{{ lecturer.DOB }}</td>
+                        <td>
+                            <a href="{% url 'lecturer-update' lecturer.pk %}">Edit</a> |
+                            <a href="{% url 'lecturer-delete' lecturer.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

@@ -1,0 +1,63 @@
+import json
+from django.contrib.auth.hashers import make_password
+
+# 사용자 데이터 생성
+users = []
+# 관리자
+users.append({
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+        "username": "admin",
+        "password": "pbkdf2_sha256$870000$cOxRJ0PZw1GlXvbyYihfvy$EDHdLINWf+ZFlAF5kLonkpiYb2II9BD+OxPIYJriQSQ=",
+        "first_name": "Admin",
+        "last_name": "User",
+        "is_superuser": True,
+        "is_staff": True,
+        "is_active": True
+    }
+})
+
+# 강사 6명 생성
+lecturer_first_names = ["John", "Jane", "Paul", "Anna", "Mike", "Emily"]
+lecturer_last_names = ["Doe", "Smith", "Johnson", "Williams", "Brown", "Jones"]
+
+for i in range(6):
+    users.append({
+        "model": "auth.user",
+        "pk": i + 2,
+        "fields": {
+            "username": f"le{i+1}",
+            "password": "pbkdf2_sha256$870000$cOxRJ0PZw1GlXvbyYihfvy$EDHdLINWf+ZFlAF5kLonkpiYb2II9BD+OxPIYJriQSQ=",
+            "first_name": lecturer_first_names[i],
+            "last_name": lecturer_last_names[i],
+            "is_superuser": False,
+            "is_staff": True,
+            "is_active": True
+        }
+    })
+
+# 학생 50명 생성
+student_first_names = ["James", "Mary", "Robert", "Patricia", "Michael", "Linda", "William", "Barbara", "David", "Elizabeth"]
+student_last_names = ["Miller", "Wilson", "Moore", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin"]
+
+for i in range(50):
+    first_name = student_first_names[i % len(student_first_names)]
+    last_name = student_last_names[i % len(student_last_names)]
+    users.append({
+        "model": "auth.user",
+        "pk": i + 8,  # PK 1-7은 관리자와 강사들
+        "fields": {
+            "username": f"st{i+1}",
+            "password": "pbkdf2_sha256$870000$cOxRJ0PZw1GlXvbyYihfvy$EDHdLINWf+ZFlAF5kLonkpiYb2II9BD+OxPIYJriQSQ=",
+            "first_name": first_name,
+            "last_name": last_name,
+            "is_superuser": False,
+            "is_staff": False,
+            "is_active": True
+        }
+    })
+
+# JSON 파일로 저장
+with open('fixtures/users.json', 'w') as f:
+    json.dump(users, f, indent=4)

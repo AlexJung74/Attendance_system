@@ -1,16 +1,20 @@
 <!-- attendance/templates/attendance/admin/student_list.html -->
 
-{% extends 'attendance/../base.html' %}
+{% extends 'base.html' %}
 {% load static %}
+{% block title %}Student List{% endblock %}
+
 {% block content %}
 <div class="container">
-    <h2>Student List</h2>
-    <table>
-        <thead>
+    <h2 class="mb-4">Student List</h2>
+    <a href="{% url 'student-create' %}" class="btn btn-success mb-3">Add New Student</a>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
             <tr>
                 <th>Username</th>
                 <th>Student ID</th>
                 <th>Date of Birth</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -19,6 +23,14 @@
                 <td>{{ student.user.username }}</td>
                 <td>{{ student.student_id }}</td>
                 <td>{{ student.DOB }}</td>
+                <td>
+                    <a href="{% url 'student-update' student.pk %}" class="btn btn-secondary btn-sm">Edit</a>
+                    <a href="{% url 'student-delete' student.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No students available.</td>
             </tr>
             {% endfor %}
         </tbody>

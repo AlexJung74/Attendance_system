@@ -1,7 +1,11 @@
-{% extends 'attendance/../base.html' %}
+<!-- attendance/templates/attendance/admin/semester_list.html -->
+
+{% extends 'base.html' %}
 {% load static %}
+
 {% block title %}Semester List{% endblock %}
 {% block content %}
+<div class="container">
 <h2>Semester List</h2>
 <table>
     <thead>
@@ -25,4 +29,5 @@
     </tbody>
 </table>
 <a href="{% url 'semester-create' %}">Add New Semester</a>
+</div>
 {% endblock %}

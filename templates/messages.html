@@ -1,14 +1,12 @@
 <!-- attendance/templates/attendance/common/messages.html -->
 
-{% load static %}
 {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">
-                <div class="message-content">
-                    {{ message }}
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+<div class="mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+</div>
 {% endif %}

@@ -1,0 +1,48 @@
+<!-- attendance/templates/select_attendance.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Select Class{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Select Class for Attendance</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="semester">Semester:</label>
+            <select name="semester" id="semester" class="form-control">
+                <option value="">Select Semester</option>
+                {% for semester in semesters %}
+                <option value="{{ semester.id }}" {% if semester.id == selected_semester %}selected{% endif %}>
+                    {{ semester.year }} {{ semester.semester }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="course">Course:</label>
+            <select name="course" id="course" class="form-control">
+                <option value="">Select Course</option>
+                {% for course in courses %}
+                <<option value="{{ course.id }}" {% if course.id == selected_course %}selected{% endif %}>
+                    {{ course.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="class_number">Class Number:</label>
+            <select name="class_number" id="class_number" class="form-control">
+                <option value="">Select Class</option>
+                {% for class_instance in classes %}
+                <option value="{{ class_instance.id }}" {% if class_instance.id == selected_class %}selected{% endif %}>
+                    {{ class_instance.number }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Proceed to Attendance</button>
+    </form>
+</div>
+{% endblock %}

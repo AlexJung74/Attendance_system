@@ -1,0 +1,22 @@
+[
+  {
+    "model": "attendance.class",
+    "pk": 1,
+    "fields": {
+      "number": 1,
+      "course": 1,
+      "semester": 1,
+      "lecturer": 1
+    }
+  },
+  {
+    "model": "attendance.class",
+    "pk": 2,
+    "fields": {
+      "number": 2,
+      "course": 2,
+      "semester": 2,
+      "lecturer": 1
+    }
+  }
+]

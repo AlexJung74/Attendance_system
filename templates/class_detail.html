@@ -1,0 +1,16 @@
+<!-- attendance/templates/class_detail.html -->
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Class Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Class {{ class_detail.number }} Details</h2>
+    <p><strong>Course:</strong> {{ class_detail.course.name }}</p>
+    <p><strong>Semester:</strong> {{ class_detail.semester.year }} {{ class_detail.semester.semester }}</p>
+    <p><strong>Lecturer:</strong> {{ class_detail.lecturer.user.get_full_name }}</p>
+    <!-- 필요에 따라 추가 정보를 여기에 넣을 수 있습니다 -->
+</div>
+{% endblock %}

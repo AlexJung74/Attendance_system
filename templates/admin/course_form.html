@@ -1,15 +1,16 @@
-<!-- attendance/templates/attendance/admin/course_form.html -->
+<!-- attendance/templates/admin/course_form.html -->
 
-{% extends 'attendance/../base.html' %}
-{% load static %}
-{% block title %}Add/Edit Course{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Course Form{% endblock %}
 
 {% block content %}
-<h2>{% if object %}Edit{% else %}Add{% endif %} Course</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
-<a href="{% url 'course-list' %}">Back to Course List</a>
+<div class="container">
+    <h2>{% if object %}Edit Course{% else %}Add New Course{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a href="{% url 'course-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
 {% endblock %}

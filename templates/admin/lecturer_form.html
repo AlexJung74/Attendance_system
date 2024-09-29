@@ -1,15 +1,17 @@
-<!-- attendance/templates/attendance/admin/lecturer_form.html -->
+<!-- templates/attendance/admin/lecturer_form.html -->
 
-{% extends 'attendance/../base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% block title %}Add/Edit Lecturer{% endblock %}
 
 {% block content %}
-<h2>{% if object %}Edit{% else %}Add{% endif %} Lecturer</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Save</button>
-</form>
-<a href="{% url 'lecturer-list' %}">Back to Lecturer List</a>
+<div class="container">
+    <h2>{% if object %}Edit{% else %}Add{% endif %} Lecturer</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    <a href="{% url 'lecturer-list' %}" class="btn btn-secondary mt-3">Back to Lecturer List</a>
+</div>
 {% endblock %}
