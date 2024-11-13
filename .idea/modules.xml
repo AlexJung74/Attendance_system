@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../attendance-system/.idea/attendance-system.iml" filepath="$PROJECT_DIR$/../attendance-system/.idea/attendance-system.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/attendance_system.iml" filepath="$PROJECT_DIR$/.idea/attendance_system.iml" />
     </modules>
   </component>

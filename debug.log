@@ -2186,3 +2186,113 @@ DEBUG 2024-11-13 22:42:11,262 autoreload File C:\python\Attendance_system\.venv\
 DEBUG 2024-11-13 22:42:11,262 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\sessions\backends\db.py first seen with mtime 1727230591.964218
 DEBUG 2024-11-13 22:42:11,263 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\db\migrations\executor.py first seen with mtime 1727230592.5975015
 DEBUG 2024-11-13 22:42:11,263 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\db\migrations\executor.py first seen with mtime 1727230592.5975015
+INFO 2024-11-14 00:31:10,069 basehttp "GET /lecturers/ HTTP/1.1" 200 6014
+INFO 2024-11-14 00:31:10,069 basehttp "GET /lecturers/ HTTP/1.1" 200 6014
+INFO 2024-11-14 00:31:10,086 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2024-11-14 00:31:10,086 basehttp "GET /static/css/bootstrap.min.css HTTP/1.1" 304 0
+INFO 2024-11-14 00:31:10,090 basehttp "GET /static/css/styles.css HTTP/1.1" 304 0
+WARNING 2024-11-14 00:31:10,091 log Not Found: /static/js/jquery.min.js
+INFO 2024-11-14 00:31:10,090 basehttp "GET /static/css/styles.css HTTP/1.1" 304 0
+WARNING 2024-11-14 00:31:10,093 log Not Found: /static/js/bootstrap.bundle.min.js
+WARNING 2024-11-14 00:31:10,095 log Not Found: /static/js/scripts.js
+WARNING 2024-11-14 00:31:10,095 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:10,095 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:10,096 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:10,096 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:10,096 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:10,096 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+DEBUG 2024-11-14 00:31:10,725 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\messages\storage\fallback.py first seen with mtime 1727230591.3343709
+DEBUG 2024-11-14 00:31:10,725 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\messages\storage\fallback.py first seen with mtime 1727230591.3343709
+DEBUG 2024-11-14 00:31:10,726 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\messages\storage\cookie.py first seen with mtime 1727230591.3333707
+DEBUG 2024-11-14 00:31:10,726 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\messages\storage\cookie.py first seen with mtime 1727230591.3333707
+DEBUG 2024-11-14 00:31:10,733 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\auth\context_processors.py first seen with mtime 1727230590.11488
+DEBUG 2024-11-14 00:31:10,733 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\auth\context_processors.py first seen with mtime 1727230590.11488
+DEBUG 2024-11-14 00:31:10,741 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\conf\locale\en\__init__.py first seen with mtime 1727230588.8727653
+DEBUG 2024-11-14 00:31:10,741 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\conf\locale\en\__init__.py first seen with mtime 1727230588.8727653
+DEBUG 2024-11-14 00:31:10,744 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\messages\context_processors.py first seen with mtime 1727230591.3283713
+DEBUG 2024-11-14 00:31:10,744 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\messages\context_processors.py first seen with mtime 1727230591.3283713
+DEBUG 2024-11-14 00:31:10,747 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\messages\storage\session.py first seen with mtime 1727230591.335369
+DEBUG 2024-11-14 00:31:10,747 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\messages\storage\session.py first seen with mtime 1727230591.335369
+DEBUG 2024-11-14 00:31:10,749 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\template\context_processors.py first seen with mtime 1727230592.764501
+DEBUG 2024-11-14 00:31:10,749 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\template\context_processors.py first seen with mtime 1727230592.764501
+DEBUG 2024-11-14 00:31:10,752 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\sessions\serializers.py first seen with mtime 1727230591.9602187
+DEBUG 2024-11-14 00:31:10,752 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\contrib\sessions\serializers.py first seen with mtime 1727230591.9602187
+DEBUG 2024-11-14 00:31:10,754 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\conf\locale\en\formats.py first seen with mtime 1727230588.873766
+DEBUG 2024-11-14 00:31:10,754 autoreload File C:\python\Attendance_system\.venv\Lib\site-packages\django\conf\locale\en\formats.py first seen with mtime 1727230588.873766
+INFO 2024-11-14 00:31:13,501 basehttp "GET /courses/ HTTP/1.1" 200 7245
+INFO 2024-11-14 00:31:13,501 basehttp "GET /courses/ HTTP/1.1" 200 7245
+WARNING 2024-11-14 00:31:13,539 log Not Found: /static/js/jquery.min.js
+WARNING 2024-11-14 00:31:13,540 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:13,540 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:13,549 log Not Found: /static/js/bootstrap.bundle.min.js
+WARNING 2024-11-14 00:31:13,549 log Not Found: /static/js/scripts.js
+WARNING 2024-11-14 00:31:13,550 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:13,550 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:13,550 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:13,550 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+INFO 2024-11-14 00:31:15,770 basehttp "GET /courses/1/edit/ HTTP/1.1" 200 3880
+INFO 2024-11-14 00:31:15,770 basehttp "GET /courses/1/edit/ HTTP/1.1" 200 3880
+WARNING 2024-11-14 00:31:15,790 log Not Found: /static/js/jquery.min.js
+WARNING 2024-11-14 00:31:15,791 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:15,792 log Not Found: /static/js/bootstrap.bundle.min.js
+WARNING 2024-11-14 00:31:15,794 log Not Found: /static/js/scripts.js
+WARNING 2024-11-14 00:31:15,791 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:15,795 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:15,795 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:15,795 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:15,795 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+INFO 2024-11-14 00:31:18,983 basehttp "GET /courses/ HTTP/1.1" 200 7245
+INFO 2024-11-14 00:31:18,983 basehttp "GET /courses/ HTTP/1.1" 200 7245
+WARNING 2024-11-14 00:31:19,002 log Not Found: /static/js/jquery.min.js
+WARNING 2024-11-14 00:31:19,003 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:19,003 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:19,008 log Not Found: /static/js/bootstrap.bundle.min.js
+WARNING 2024-11-14 00:31:19,009 log Not Found: /static/js/scripts.js
+WARNING 2024-11-14 00:31:19,010 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:19,010 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:19,010 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:19,010 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+INFO 2024-11-14 00:31:23,435 basehttp "GET /lecturers/ HTTP/1.1" 200 6014
+INFO 2024-11-14 00:31:23,435 basehttp "GET /lecturers/ HTTP/1.1" 200 6014
+WARNING 2024-11-14 00:31:23,457 log Not Found: /static/js/jquery.min.js
+WARNING 2024-11-14 00:31:23,458 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:23,458 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:23,465 log Not Found: /static/js/bootstrap.bundle.min.js
+WARNING 2024-11-14 00:31:23,466 log Not Found: /static/js/scripts.js
+WARNING 2024-11-14 00:31:23,466 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:23,467 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:23,466 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:23,467 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+INFO 2024-11-14 00:31:25,693 basehttp "GET /classes/ HTTP/1.1" 200 51088
+INFO 2024-11-14 00:31:25,693 basehttp "GET /classes/ HTTP/1.1" 200 51088
+WARNING 2024-11-14 00:31:25,715 log Not Found: /static/js/jquery.min.js
+WARNING 2024-11-14 00:31:25,716 log Not Found: /static/js/bootstrap.bundle.min.js
+WARNING 2024-11-14 00:31:25,718 log Not Found: /static/js/scripts.js
+WARNING 2024-11-14 00:31:25,719 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:25,719 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:25,719 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:25,719 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:25,720 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:25,720 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+INFO 2024-11-14 00:31:31,809 basehttp "GET /classes/1/edit/ HTTP/1.1" 200 5234
+INFO 2024-11-14 00:31:31,809 basehttp "GET /classes/1/edit/ HTTP/1.1" 200 5234
+WARNING 2024-11-14 00:31:31,831 log Not Found: /static/js/jquery.min.js
+WARNING 2024-11-14 00:31:31,832 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:31,832 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:31,837 log Not Found: /static/js/bootstrap.bundle.min.js
+WARNING 2024-11-14 00:31:31,838 log Not Found: /static/js/scripts.js
+WARNING 2024-11-14 00:31:31,838 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:31,839 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:31,838 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:31,839 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+INFO 2024-11-14 00:31:37,013 basehttp "GET /classes/ HTTP/1.1" 200 51088
+INFO 2024-11-14 00:31:37,013 basehttp "GET /classes/ HTTP/1.1" 200 51088
+WARNING 2024-11-14 00:31:37,036 log Not Found: /static/js/jquery.min.js
+WARNING 2024-11-14 00:31:37,037 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:37,037 basehttp "GET /static/js/jquery.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:37,041 log Not Found: /static/js/bootstrap.bundle.min.js
+WARNING 2024-11-14 00:31:37,042 log Not Found: /static/js/scripts.js
+WARNING 2024-11-14 00:31:37,043 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:37,043 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:37,043 basehttp "GET /static/js/bootstrap.bundle.min.js HTTP/1.1" 404 179
+WARNING 2024-11-14 00:31:37,043 basehttp "GET /static/js/scripts.js HTTP/1.1" 404 179
