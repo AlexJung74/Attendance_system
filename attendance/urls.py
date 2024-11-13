@@ -9,6 +9,11 @@ from .views import (
 )
 from .views.lecturer_views import lecturer_dashboard
 import logging
+from rest_framework.routers import DefaultRouter
+from .views.viewsets import (
+    CourseViewSet, SemesterViewSet, LecturerViewSet,
+    StudentViewSet, ClassViewSet, CollegeDayViewSet, AttendanceViewSet
+)
 
 logger = logging.getLogger('django')
 
@@ -17,7 +22,18 @@ def url_log(pattern, view_func, name=None):
     logger.info(f"URL pattern added: {pattern}, view_func: {view_func}, name: {name}")
     return path(pattern, view_func, name=name)
 
+router = DefaultRouter()
+router.register(r'courses', CourseViewSet)
+router.register(r'semesters', SemesterViewSet)
+router.register(r'lecturers', LecturerViewSet)
+router.register(r'students', StudentViewSet)
+router.register(r'classes', ClassViewSet)
+router.register(r'college_days', CollegeDayViewSet)
+router.register(r'attendance', AttendanceViewSet)
 
+urlpatterns = router.urls
+
+'''
 urlpatterns = [
     # 기본 홈 페이지 (로그인)
     path('dashboard/', home_views.dashboard, name='dashboard'),
@@ -65,3 +81,4 @@ urlpatterns = [
     path('get-courses/<int:semester_id>/', admin_views.get_courses, name='get-courses'),
     path('get-classes/<int:semester_id>/<int:course_id>/', admin_views.get_classes, name='get-classes'),
 ]
+'''
