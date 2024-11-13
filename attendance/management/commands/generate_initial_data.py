@@ -1,7 +1,4 @@
-# models.py (변경 없음)
-# 주어진 모델은 적절하게 설정되어 있으며 변경 없이 사용 가능합니다.
-
-# attendance/management/commands/generate_initial_data.py (수정된 부분 포함)
+# attendance/management/commands/generate_initial_data.py
 
 import random
 from datetime import date, timedelta

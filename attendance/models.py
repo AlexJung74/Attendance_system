@@ -1,4 +1,4 @@
-# models.py
+# attendance/views/models.py
 
 from datetime import date, timedelta
 
