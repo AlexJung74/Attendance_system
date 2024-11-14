@@ -20,36 +20,34 @@ from attendance.utils import (
     calculate_attendance_rate,
     has_permission_for_attendance, update_attendance_status
 )
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 logger = logging.getLogger('attendance')
 
 
-# 관리자 대시보드 (클래스형 뷰)
-class AdminDashboardView(LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
-    permission_required = 'admin.can_view_permission'
-    template_name = 'admin/admin_dashboard.html'
-    raise_exception = True  # 권한이 없을 때 예외 발생
+# 관리자 대시보드 (클래스형 뷰) - TokenAuthentication 사용
+class AdminDashboardView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        selected_semester = self.request.GET.get('selected_semester')
-        selected_course = self.request.GET.get('selected_course')
-        selected_class_instance = self.request.GET.get('selected_class_instance')
+    def get(self, request):
+        # 필요 시 추가 데이터 구성
+        lecturers = Lecturer.objects.all()
+        courses = Course.objects.all()
+        classes = Class.objects.all()
+        semesters = Semester.objects.all()
 
-        selected_class = None
-        if selected_class_instance:
-            selected_class = get_object_or_404(Class, pk=selected_class_instance)
-
-        context.update({
-            'lecturers': Lecturer.objects.all(),
-            'courses': Course.objects.all(),
-            'classes': Class.objects.all(),
-            'semesters': Semester.objects.all(),
-            'selected_class': selected_class,
-            'selected_semester': selected_semester,
-            'selected_course': selected_course,
-        })
-        return context
+        context = {
+            'lecturers': lecturers,
+            'courses': courses,
+            'classes': classes,
+            'semesters': semesters,
+        }
+        return JsonResponse(context)
 
 
 # 학기 관리 뷰
@@ -422,21 +420,16 @@ def upload_students_excel(request):
         return render(request, 'admin/upload_students_excel.html')
 
 
-@require_GET
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_courses(request, semester_id):
     logger.info(f"get_courses called with semester_id: {semester_id}")
     try:
         semester = Semester.objects.get(id=semester_id)
     except Semester.DoesNotExist:
-        logger.warning(f"Semester ID {semester_id} does not exist.")
         return JsonResponse({'error': 'Invalid semester ID'}, status=400)
 
     courses = list(Course.objects.filter(classes__semester=semester).distinct().values('id', 'name'))
-    logger.info(f"Courses found: {courses}")
-
-    if not courses:
-        return JsonResponse({'courses': [], 'message': 'No courses found for this semester.'})
-
     return JsonResponse({'courses': courses})
 
 

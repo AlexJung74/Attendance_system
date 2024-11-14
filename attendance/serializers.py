@@ -1,7 +1,15 @@
-# attendance/views/serializers.py
+# attendance/serializers.py
 
 from rest_framework import serializers
+from django.contrib.auth.models import User
 from .models import Course, Semester, Lecturer, Student, Class, CollegeDay, Attendance
+
+
+# User 모델 직렬화
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name', 'email']
 
 
 # Course 모델 직렬화
@@ -20,6 +28,8 @@ class SemesterSerializer(serializers.ModelSerializer):
 
 # Lecturer 모델 직렬화
 class LecturerSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  # User 정보를 포함
+
     class Meta:
         model = Lecturer
         fields = ['id', 'user', 'staff_id', 'DOB']
@@ -27,17 +37,27 @@ class LecturerSerializer(serializers.ModelSerializer):
 
 # Student 모델 직렬화
 class StudentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)  # User 정보를 포함
+    classes = serializers.PrimaryKeyRelatedField(many=True, queryset=Class.objects.all())  # 클래스 ID만 참조
+
     class Meta:
         model = Student
         fields = ['id', 'user', 'student_id', 'DOB', 'classes']
 
 
-# Class 모델 직렬화
-class ClassSerializer(serializers.ModelSerializer):
-    course = CourseSerializer()  # 관련 코스 정보 포함
-    semester = SemesterSerializer()  # 관련 학기 정보 포함
-    lecturer = LecturerSerializer()  # 관련 강사 정보 포함
+# Class 모델 읽기 전용 직렬화 (읽기 전용)
+class ClassReadSerializer(serializers.ModelSerializer):
+    course = CourseSerializer(read_only=True)  # 관련 코스 정보 포함
+    semester = SemesterSerializer(read_only=True)  # 관련 학기 정보 포함
+    lecturer = LecturerSerializer(read_only=True)  # 관련 강사 정보 포함
 
+    class Meta:
+        model = Class
+        fields = ['id', 'number', 'course', 'semester', 'lecturer']
+
+
+# Class 모델 쓰기 전용 직렬화 (쓰기 전용)
+class ClassWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Class
         fields = ['id', 'number', 'course', 'semester', 'lecturer']
@@ -45,7 +65,7 @@ class ClassSerializer(serializers.ModelSerializer):
 
 # CollegeDay 모델 직렬화
 class CollegeDaySerializer(serializers.ModelSerializer):
-    class_instance = ClassSerializer()  # 수업 정보 포함
+    class_instance = ClassReadSerializer(read_only=True)  # 수업 정보 포함
 
     class Meta:
         model = CollegeDay
@@ -54,8 +74,8 @@ class CollegeDaySerializer(serializers.ModelSerializer):
 
 # Attendance 모델 직렬화
 class AttendanceSerializer(serializers.ModelSerializer):
-    student = StudentSerializer()  # 학생 정보 포함
-    class_instance = ClassSerializer()  # 수업 정보 포함
+    student = StudentSerializer(read_only=True)  # 학생 정보 포함
+    class_instance = ClassReadSerializer(read_only=True)  # 수업 정보 포함
 
     class Meta:
         model = Attendance

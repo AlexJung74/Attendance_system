@@ -1,19 +1,21 @@
 # attendance/views/urls.py
 
-from django.urls import path
+from django.urls import path, include
+import logging
+from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import (
     home_views,
     admin_views,
     lecturer_views,
     student_views,
+    auth_views,
 )
-from .views.lecturer_views import lecturer_dashboard
-import logging
-from rest_framework.routers import DefaultRouter
-from .views.viewsets import (
+from .views.api import (
     CourseViewSet, SemesterViewSet, LecturerViewSet,
     StudentViewSet, ClassViewSet, CollegeDayViewSet, AttendanceViewSet
 )
+from .views.auth_views import CustomAuthToken
 
 logger = logging.getLogger('django')
 
@@ -22,16 +24,28 @@ def url_log(pattern, view_func, name=None):
     logger.info(f"URL pattern added: {pattern}, view_func: {view_func}, name: {name}")
     return path(pattern, view_func, name=name)
 
-router = DefaultRouter()
-router.register(r'courses', CourseViewSet)
-router.register(r'semesters', SemesterViewSet)
-router.register(r'lecturers', LecturerViewSet)
-router.register(r'students', StudentViewSet)
-router.register(r'classes', ClassViewSet)
-router.register(r'college_days', CollegeDayViewSet)
-router.register(r'attendance', AttendanceViewSet)
 
-urlpatterns = router.urls
+router = DefaultRouter()
+router.register(r'courses', CourseViewSet, basename='course')
+router.register(r'semesters', SemesterViewSet, basename='semester')
+router.register(r'lecturers', LecturerViewSet, basename='lecturer')
+router.register(r'students', StudentViewSet, basename='student')
+router.register(r'classes', ClassViewSet, basename='class')
+router.register(r'college-days', CollegeDayViewSet, basename='college-day')
+router.register(r'attendances', AttendanceViewSet, basename='attendance')
+
+urlpatterns = [
+    # Auth API 엔드포인트 추가
+    path('api/auth/login/', CustomAuthToken.as_view(), name='login'),
+
+    # REST API URL 패턴(router.urls 사용)
+    path('api/', include(router.urls)),
+
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+]
+
+urlpatterns += router.urls
 
 '''
 urlpatterns = [

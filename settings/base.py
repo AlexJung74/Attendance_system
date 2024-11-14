@@ -11,10 +11,17 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DATABASES = {
+    'default': {
+        'ENGINE': os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.environ.get('DB_NAME', BASE_DIR / 'db.sqlite3'),
+    }
+}
+
 # SECRET_KEY = 'django-insecure-(w2h!&e2sep24fl$587x%@85aq8!v@w!m06+z)j+=30g_at0rm'
 SECRET_KEY = config('SECRET_KEY')
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
 
 SESSION_SAVE_EVERY_REQUEST = False
 
@@ -26,9 +33,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'attendance',
+    'corsheaders',
+    'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -39,7 +50,28 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# 특정 도메인 허용 (React 앱에서의 접근 허용)
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React 애플리케이션의 주소
+]
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+
+# 모든 헤더를 허용
+CORS_ALLOW_HEADERS = ['*']
+
+# 로그인 세션을 위해 CORS 허용
+CORS_ALLOW_CREDENTIALS = True
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
 ROOT_URLCONF = 'attendance_system.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 TEMPLATES = [
     {
