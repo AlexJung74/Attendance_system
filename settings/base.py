@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 
 # Load environment variables from .env file (optional)
 from dotenv import load_dotenv
@@ -53,11 +54,24 @@ MIDDLEWARE = [
 # 특정 도메인 허용 (React 앱에서의 접근 허용)
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React 애플리케이션의 주소
+    "http://localhost:8000",
 ]
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
 # 모든 헤더를 허용
-CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_HEADERS = [
+    'Authorization',
+    'Content-Type',
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'User-Agent',
+    'DNT',
+    'Cache-Control',
+    'X-Mx-ReqToken',
+    'Keep-Alive',
+    'If-Modified-Since',
+]
 
 # 로그인 세션을 위해 CORS 허용
 CORS_ALLOW_CREDENTIALS = True
@@ -71,6 +85,16 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # accessToken 수명 설정
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),   # refreshToken 수명 설정
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 TEMPLATES = [

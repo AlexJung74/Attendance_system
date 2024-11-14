@@ -127,7 +127,7 @@ class AdminClassListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
         """
         context = super().get_context_data(**kwargs)
         # 예시: 추가적으로 다른 데이터를 context에 전달
-        context['title'] = 'Admin Class List'
+        context['title'] = 'Dashboards Class List'
         context['total_classes'] = self.get_queryset().count()  # 전체 클래스 수를 추가
         return context
 

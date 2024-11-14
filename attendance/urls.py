@@ -3,14 +3,7 @@
 from django.urls import path, include
 import logging
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .views import (
-    home_views,
-    admin_views,
-    lecturer_views,
-    student_views,
-    auth_views,
-)
+from rest_framework_simplejwt.views import TokenRefreshView
 from .views.api import (
     CourseViewSet, SemesterViewSet, LecturerViewSet,
     StudentViewSet, ClassViewSet, CollegeDayViewSet, AttendanceViewSet
@@ -19,12 +12,11 @@ from .views.auth_views import CustomAuthToken
 
 logger = logging.getLogger('django')
 
-
 def url_log(pattern, view_func, name=None):
     logger.info(f"URL pattern added: {pattern}, view_func: {view_func}, name: {name}")
     return path(pattern, view_func, name=name)
 
-
+# REST API를 위한 DefaultRouter 설정
 router = DefaultRouter()
 router.register(r'courses', CourseViewSet, basename='course')
 router.register(r'semesters', SemesterViewSet, basename='semester')
@@ -34,18 +26,19 @@ router.register(r'classes', ClassViewSet, basename='class')
 router.register(r'college-days', CollegeDayViewSet, basename='college-day')
 router.register(r'attendances', AttendanceViewSet, basename='attendance')
 
+# URL 패턴 설정
 urlpatterns = [
-    # Auth API 엔드포인트 추가
-    path('api/auth/login/', CustomAuthToken.as_view(), name='login'),
+    # 사용자 인증 API 엔드포인트
+    path('api/auth/login/', CustomAuthToken.as_view(), name='token_obtain_pair'),  # CustomAuthToken을 로그인 엔드포인트로 사용
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # 리프레시 토큰 엔드포인트
 
-    # REST API URL 패턴(router.urls 사용)
+    # REST API 엔드포인트
     path('api/', include(router.urls)),
-
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
+# router.urls도 urlpatterns에 포함
 urlpatterns += router.urls
+
 
 '''
 urlpatterns = [

@@ -144,7 +144,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Admin Buttons: Flexible layout for admin action buttons */
+/* Dashboards Buttons: Flexible layout for admin action buttons */
 .admin-buttons {
     display: flex;
     flex-wrap: wrap;

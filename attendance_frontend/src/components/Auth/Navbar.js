@@ -9,13 +9,19 @@ function Navbar({ userRole }) {
 
     const handleLogout = async () => {
         try {
+            // 로그아웃 요청을 보내고, 성공 시 토큰 삭제 및 리다이렉트
             await axios.post('/api/auth/logout/', null, {
-                headers: { Authorization: `Token ${localStorage.getItem('token')}` },
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
-            localStorage.removeItem('token');
-            navigate('/');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            navigate('/', { replace: true });
         } catch (error) {
             console.error('Logout failed:', error);
+            // 로그아웃이 실패해도 클라이언트 쪽에서는 토큰을 제거하고 로그인 페이지로 리다이렉트
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            navigate('/', { replace: true });
         }
     };
 

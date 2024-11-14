@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
     def create_groups(self):
         # 그룹 생성
-        groups = ['Admin', 'Lecturers', 'Students']
+        groups = ['Dashboards', 'Lecturers', 'Students']
         for group in groups:
             Group.objects.get_or_create(name=group)
 
@@ -43,7 +43,7 @@ class Command(BaseCommand):
         ]
 
         # 관리자 그룹 가져오기
-        admin_group = Group.objects.get(name='Admin')
+        admin_group = Group.objects.get(name='Dashboards')
         lecturer_group = Group.objects.get(name='Lecturers')
         student_group = Group.objects.get(name='Students')
 
@@ -53,7 +53,7 @@ class Command(BaseCommand):
                 username='admin',
                 password='asdd1233',
                 email='zend74@gmail.com',
-                first_name='Admin',
+                first_name='Dashboards',
                 last_name='User'
             )
             admin_user.groups.add(admin_group)

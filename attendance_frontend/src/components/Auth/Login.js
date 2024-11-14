@@ -1,55 +1,66 @@
-// src/components/Auth/Login.js
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuthDispatch } from './AuthContext';
 
 function Login() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useAuthDispatch();
+  const navigate = useNavigate();
 
-    const handleLogin = async (event) => {
-        event.preventDefault();
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    console.log('Attempting login with:', { username, password });
 
-        // 로그인 요청 시도 전에 입력 값과 URL 확인
-        console.log('Attempting login with:', { username, password });
+    try {
+      const response = await axios.post('http://localhost:8000/api/auth/login/', { username, password });
+      console.log('Login successful, response data:', response.data);
 
-        try {
-            const response = await axios.post('/api/auth/login/', { username, password });
+      // accessToken과 refreshToken을 정확한 키로 localStorage에 저장
+      localStorage.setItem('accessToken', response.data.access);
+      localStorage.setItem('refreshToken', response.data.refresh);
 
-            // 로그인 성공 시 응답 데이터 확인
-            console.log('Login successful, response data:', response.data);
+      console.log("Stored accessToken:", localStorage.getItem('accessToken'));
+      console.log("Stored refreshToken:", localStorage.getItem('refreshToken'));
 
-            localStorage.setItem('token', response.data.token);
+      dispatch({ type: 'LOGIN', role: response.data.is_superuser ? 'admin' : response.data.is_lecturer ? 'lecturer' : 'student' });
 
-            // 사용자 역할에 따른 리다이렉션 로직 확인
-            if (response.data.is_superuser) {
-                console.log('Navigating to Admin Dashboard');
-                navigate('/admin/dashboard');
-            } else if (response.data.is_lecturer) {
-                console.log('Navigating to Lecturer Dashboard');
-                navigate('/lecturer/dashboard');
-            } else {
-                console.log('Navigating to Student Dashboard');
-                navigate('/student/dashboard');
-            }
-        } catch (error) {
-            // 로그인 실패 시 오류 로그 확인
-            console.error('Login failed:', error);
-            if (error.response) {
-                console.error('Error response data:', error.response.data);
-            }
-        }
-    };
+      if (response.data.is_superuser) {
+        navigate('/admin/dashboard', { replace: true });
+      } else if (response.data.is_lecturer) {
+        navigate('/lecturer/dashboard', { replace: true });
+      } else {
+        navigate('/student/dashboard', { replace: true });
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+      if (error.response) {
+        console.error('Error response data:', error.response.data);
+      }
+    }
+  };
 
-    return (
-        <form onSubmit={handleLogin}>
-            <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-            <button type="submit">Login</button>
-        </form>
-    );
+  return (
+    <form onSubmit={handleLogin}>
+      <input
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        placeholder="Username"
+        name="username"
+        id="username"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        placeholder="Password"
+        name="password"
+        id="password"
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
 }
 
 export default Login;
