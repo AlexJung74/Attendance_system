@@ -1,0 +1,95 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+/* 전체 페이지 스타일 */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar 스타일: 항상 상단에 고정 */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* 메인 콘텐츠 스타일 */
+.main-content {
+  flex: 1; /* 남은 공간을 채우기 위해 flex 사용 */
+  display: flex;
+  justify-content: center; /* 가로 방향 가운데 정렬 */
+  align-items: center; /* 세로 방향 가운데 정렬 */
+  padding: 20px;
+  background-color: #f8f9fa; /* 기본 배경색 */
+}
+
+/* 반응형을 위한 콘텐츠 크기 제한 */
+.main-content > .container {
+  max-width: 1200px; /* 최대 콘텐츠 폭 설정 */
+  width: 100%;
+  padding: 15px;
+}
+
+/* Navbar 스타일 */
+.navbar {
+  padding: 10px 20px; /* 상하 10px, 좌우 20px */
+}
+
+/* Navbar 항목 간 간격 */
+.navbar-nav .nav-item {
+  margin: 0 10px; /* 좌우 10px 여백 */
+}
+
+/* 버튼 스타일 조정 */
+.navbar .btn-link.nav-link {
+  padding: 5px 10px; /* 버튼의 상하 5px, 좌우 10px 패딩 */
+}
