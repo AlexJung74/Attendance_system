@@ -156,22 +156,23 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'console': {
-            'class': 'logging.StreamHandler',  # 표준 출력으로 출력
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
         },
     },
     'root': {
         'handlers': ['console'],
-        'level': 'DEBUG',  # DEBUG 레벨의 모든 로그를 출력
+        'level': 'DEBUG',  # INFO로 변경 가능
     },
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-        'my_app': {  # 필요 시 앱 별도 로거
-            'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': 'DEBUG',  # INFO로 변경 가능
             'propagate': False,
         },
     },

@@ -17,21 +17,6 @@ DATABASES = {
         ssl_require=True)
 }
 
-LOGGING = {
-    'version': 1,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django.db.backends': {
-            'level': 'DEBUG',
-            'handlers': ['console'],
-        },
-    },
-}
-
 # 추가적인 프로덕션 설정 (보안, 로깅 등)
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'attendance', 'static')]  # 정적 파일 디렉토리

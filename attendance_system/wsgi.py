@@ -10,8 +10,19 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/wsgi/
 """
 
 import os
+import sys
+
 from django.core.wsgi import get_wsgi_application
 import logging
+
+
+# 로그 설정: stdout 강제 출력
+logging.basicConfig(
+    stream=sys.stdout,  # stdout으로 강제 출력
+    level=logging.DEBUG,  # DEBUG 수준의 로깅
+    format='%(levelname)s %(asctime)s %(message)s',
+)
+
 
 logger = logging.getLogger('django')
 
