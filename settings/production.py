@@ -6,7 +6,7 @@ import dj_database_url
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    'attendance-system-asg1.vercel.app',  # 프로덕션 백엔드 도메인
+    'ttendance-system-backend-theta.vercel.app/',  # 프로덕션 백엔드 도메인
     'attendance-system-theta-coral.vercel.app',  # 프로덕션 프론트엔드 도메인
 ]
 
@@ -35,3 +35,8 @@ LOGGING = {
 # 추가적인 프로덕션 설정 (보안, 로깅 등)
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+WSGI_APPLICATION = 'attendance_system.wsgi.application'

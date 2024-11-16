@@ -1,3 +1,5 @@
+// react_frontend/vite.config.js
+
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 
@@ -7,13 +9,16 @@ export default defineConfig({
     // 서버 설정
     proxy: {
       '/api': {
-        target: 'http://localhost:8000', // 백엔드 API 서버 주소
+        target: process.env.VITE_BACKEND_URL, // 백엔드 API 서버 주소
         changeOrigin: true, // 대상의 Origin 헤더 변경
         secure: false, // HTTPS 인증서 무시
       },
     },
     port: 5173, // 개발 서버 포트 설정
     open: true, // 개발 서버 실행 시 브라우저 자동 열기
+  },
+  define: {
+    'process.env': process.env, // process.env 변수를 사용 가능하게 설정
   },
   resolve: {
     // 경로 및 확장자 설정
