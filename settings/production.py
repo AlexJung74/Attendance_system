@@ -3,7 +3,7 @@
 from .base import *
 import dj_database_url
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'ttendance-system-backend-theta.vercel.app/',  # 프로덕션 백엔드 도메인
@@ -39,4 +39,3 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-WSGI_APPLICATION = 'attendance_system.wsgi.application'
