@@ -50,14 +50,14 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React 애플리케이션의 주소
+    "http://localhost:3000",
     "http://localhost:8000",
     "http://localhost:5173",
     "https://attendance-system-theta-coral.vercel.app/",
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:5173',
+    "http://localhost:3000",
+    "http://localhost:5173",
     "https://attendance-system-theta-coral.vercel.app/",
 ]
 
@@ -157,12 +157,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-LOG_FILE = os.path.join(BASE_DIR, 'debug.log')
-
-if os.path.exists(LOG_FILE):
-    with open(LOG_FILE, 'w'):
-        pass
-
+# 콘솔로만 로그 기록
 LOGGING_CONFIG = None
 LOGGING = {
     'version': 1,
@@ -178,17 +173,9 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': LOG_FILE,
-            'formatter': 'verbose',
-        },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG' if DEBUG else 'INFO',
-            'propagate': True,
-        },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG' if DEBUG else 'INFO',
     },
 }
