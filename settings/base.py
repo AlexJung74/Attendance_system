@@ -1,6 +1,8 @@
 # settings/base.py
 
 import os
+import sys
+import locale
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
@@ -9,6 +11,12 @@ from datetime import timedelta
 from dotenv import load_dotenv
 load_dotenv()
 
+
+# 강제로 UTF-8 설정
+if sys.version_info[0] >= 3:
+    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+    os.environ['PYTHONIOENCODING'] = 'utf-8'
+    os.environ['LC_ALL'] = 'en_US.UTF-8'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -169,52 +177,17 @@ if os.path.exists(LOG_FILE):
         pass  # 파일을 열고 내용 비우기
 
 
+LOGGING_CONFIG = None
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
-    },
     'handlers': {
         'console': {
-            'level': 'DEBUG',  # 모든 로그 메시지를 출력하도록 DEBUG로 설정합니다.
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
-        },
-        'file': {
-            'level': 'DEBUG',  # 모든 로그 메시지를 파일로 저장하도록 DEBUG로 설정합니다.
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'debug.log'),
-            'formatter': 'verbose',
-            'encoding': 'utf-8',  # UTF-8 인코딩 사용
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',  # Django 관련 모든 로그 메시지를 출력합니다.
-            'propagate': True,
-        },
-        'django.request': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',  # 요청 관련 모든 로그 메시지를 출력합니다.
-            'propagate': False,
-        },
-        'django.db.backends': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',  # DB 쿼리 로그 메시지를 출력합니다.
-            'propagate': False,
-        },
-        'root': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',  # root 로거의 모든 로그 메시지를 출력합니다.
-        },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
     },
 }
