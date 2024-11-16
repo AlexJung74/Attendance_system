@@ -1,3 +1,5 @@
+# attendance_system/wsgi.py
+
 """
 WSGI config for attendance_system project.
 

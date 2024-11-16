@@ -3,16 +3,16 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+from django.shortcuts import redirect
 
 from attendance.utils import custom_logout
-from attendance.views import home_views  # home_views를 사용하여 로그인된 상태 확인
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Django admin
+    # Django admin 페이지를 기본 홈으로 설정
+    path('', lambda request: redirect('admin/'), name='backend-home'),
 
-    # 기본 홈 페이지 설정 (로그인된 상태에 따라 대시보드로 리디렉션)
-    path('', home_views.home, name='home'),
-    path('dashboard/', home_views.dashboard, name='dashboard'),  # 대시보드 페이지
+    # Django admin
+    path('admin/', admin.site.urls),
 
     # 로그인과 로그아웃은 /accounts 경로로 처리
     path('accounts/login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
