@@ -14,6 +14,8 @@ from django.core.asgi import get_asgi_application
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
+print("ASGI application is being loaded.")
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.production')
 
 try:
