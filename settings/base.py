@@ -51,7 +51,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://attendance-system-theta-coral.vercel.app/",
 ]
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://localhost:5173']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://localhost:5173',
+                        "https://attendance-system-theta-coral.vercel.app/", ]
 
 # 모든 헤더를 허용
 CORS_ALLOW_HEADERS = [
