@@ -1,7 +1,4 @@
-# settings/base.py
-
 import os
-import sys
 import locale
 from pathlib import Path
 from decouple import config
@@ -11,16 +8,16 @@ from datetime import timedelta
 from dotenv import load_dotenv
 load_dotenv()
 
-
-# 강제로 UTF-8 설정
-if sys.version_info[0] >= 3:
+# 강제로 UTF-8 설정 및 에러 처리
+try:
     locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
     os.environ['PYTHONIOENCODING'] = 'utf-8'
     os.environ['LC_ALL'] = 'en_US.UTF-8'
+except locale.Error:
+    print("Warning: Locale 'en_US.UTF-8' not supported. Using default locale.")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECRET_KEY = 'django-insecure-(w2h!&e2sep24fl$587x%@85aq8!v@w!m06+z)j+=30g_at0rm'
 SECRET_KEY = config('SECRET_KEY')
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
@@ -52,17 +49,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# 특정 도메인 허용 (React 앱에서의 접근 허용)
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React 애플리케이션의 주소
     "http://localhost:8000",
     "http://localhost:5173",
     "https://attendance-system-theta-coral.vercel.app/",
 ]
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://localhost:5173',
-                        "https://attendance-system-theta-coral.vercel.app/", ]
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    "https://attendance-system-theta-coral.vercel.app/",
+]
 
-# 모든 헤더를 허용
 CORS_ALLOW_HEADERS = [
     'Authorization',
     'Content-Type',
@@ -77,7 +75,6 @@ CORS_ALLOW_HEADERS = [
     'If-Modified-Since',
 ]
 
-# 로그인 세션을 위해 CORS 허용
 CORS_ALLOW_CREDENTIALS = True
 
 SECURE_BROWSER_XSS_FILTER = True
@@ -94,8 +91,8 @@ REST_FRAMEWORK = {
     ),
 }
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),  # accessToken 수명 설정
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),   # refreshToken 수명 설정
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
@@ -119,9 +116,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'attendance_system.wsgi.application'
 
-# Database 설정은 development.py와 production.py에서 별도로 관리
-
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -137,23 +131,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Mail
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # 이메일 백엔드 설정
-EMAIL_HOST = 'smtp.gmail.com'  # Gmail SMTP 서버 주소
-EMAIL_PORT = 587  # TLS 포트 (TLS 사용 시 587, SSL 사용 시 465)
-EMAIL_USE_TLS = True  # TLS 사용 설정
-EMAIL_USE_SSL = False  # SSL 미사용 (TLS와 동시에 사용할 수 없습니다)
-EMAIL_HOST_USER = 'zend74@gmail.com'  # Gmail 주소
-EMAIL_HOST_PASSWORD = 'zrbb vvxx sfwm xdad'  # Gmail 앱 비밀번호
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # 기본 보내는 사람 주소
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'zend74@gmail.com'
+EMAIL_HOST_PASSWORD = 'zrbb vvxx sfwm xdad'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'attendance', 'static')]
@@ -161,33 +152,43 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'attendance', 'static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'dashboard'
-LOGIN_URL = 'login'  # 로그인 페이지 URL
-LOGOUT_REDIRECT_URL = 'login'  # 로그아웃 후 리디렉션될 URL
+LOGIN_URL = 'login'
+LOGOUT_REDIRECT_URL = 'login'
 
-# DEBUG 설정 (기본적으로 개발 환경에서는 True)
-DEBUG = False
-# DEBUG = os.environ.get('DEBUG', 'True').lower() in ['true', '1']
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# 로그 디렉토리와 파일 설정
 LOG_FILE = os.path.join(BASE_DIR, 'debug.log')
 
-# 서버가 시작될 때 로그 파일 비우기
 if os.path.exists(LOG_FILE):
     with open(LOG_FILE, 'w'):
-        pass  # 파일을 열고 내용 비우기
-
+        pass
 
 LOGGING_CONFIG = None
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': LOG_FILE,
+            'formatter': 'verbose',
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': True,
+        },
     },
 }
