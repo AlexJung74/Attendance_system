@@ -49,6 +49,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React 애플리케이션의 주소
     "http://localhost:8000",
     "http://localhost:5173",
+    "https://attendance-system-theta-coral.vercel.app/",
 ]
 CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://localhost:5173']
 
