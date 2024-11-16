@@ -8,6 +8,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'attendance-system-backend-theta.vercel.app',  # 프로덕션 백엔드 도메인
     'attendance-system-frontend-seven.vercel.app',  # 프로덕션 프론트엔드 도메인
+    'localhost', '127.0.0.1'
 ]
 
 DATABASES = {
