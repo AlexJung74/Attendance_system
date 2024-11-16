@@ -14,7 +14,7 @@ try:
     os.environ['PYTHONIOENCODING'] = 'utf-8'
     os.environ['LC_ALL'] = 'en_US.UTF-8'
 except locale.Error:
-    print("Warning: Locale 'en_US.UTF-8' not supported. Using default locale.")
+    locale.setlocale(locale.LC_ALL, '')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
