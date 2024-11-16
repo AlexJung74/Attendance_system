@@ -1,4 +1,4 @@
-# attendance/views/urls.py
+# attendance/urls.py
 
 from django.urls import path, include
 import logging

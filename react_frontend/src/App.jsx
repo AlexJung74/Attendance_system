@@ -11,7 +11,13 @@ import AdminDashboard from './components/Dashboards/AdminDashboard';
 import LecturerDashboard from './components/Dashboards/LecturerDashboard';
 import StudentDashboard from './components/Dashboards/StudentDashboard';
 import Login from './components/Auth/Login';
-import CourseList from './components/Courses/CourseList';
+
+// 모든 Admin 관련 컴포넌트는 Admin 디렉토리 아래로 이동
+import CourseManagement from './components/Admin/CourseManagement';
+import SemesterManagement from './components/Admin/SemesterManagement';
+import ClassManagement from './components/Admin/ClassManagement';
+import LecturerManagement from './components/Admin/LecturerManagement';
+import StudentManagement from './components/Admin/StudentManagement';
 
 function AppContent() {
   const { isAuthenticated, userRole } = useAuthState();
@@ -45,16 +51,19 @@ function AppContent() {
       {/* Navbar 고정 */}
       <Navbar isAuthenticated={isAuthenticated} userRole={userRole} />
       <main className="main-content">
-        <div className="container">
-          <Routes>
-            <Route path="/" element={isAuthenticated ? <Navigate to={`/${userRole}/dashboard`} /> : <Login />} />
-            <Route path="/dashboard" element={isAuthenticated ? <Navigate to={`/${userRole}/dashboard`} /> : <Navigate to="/" />} />
-            <Route path="/admin/dashboard" element={isAuthenticated && userRole === 'admin' ? <AdminDashboard /> : <Navigate to="/" />} />
-            <Route path="/lecturer/dashboard" element={isAuthenticated && userRole === 'lecturer' ? <LecturerDashboard /> : <Navigate to="/" />} />
-            <Route path="/student/dashboard" element={isAuthenticated && userRole === 'student' ? <StudentDashboard /> : <Navigate to="/" />} />
-            <Route path="/admin/courses" element={isAuthenticated && userRole === 'admin' ? <CourseList /> : <Navigate to="/" />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={isAuthenticated ? <Navigate to={`/${userRole}/dashboard`} /> : <Login />} />
+          <Route path="/dashboard" element={isAuthenticated ? <Navigate to={`/${userRole}/dashboard`} /> : <Navigate to="/" />} />
+          <Route path="/admin/dashboard" element={isAuthenticated && userRole === 'admin' ? <AdminDashboard /> : <Navigate to="/" />} />
+          <Route path="/lecturer/dashboard" element={isAuthenticated && userRole === 'lecturer' ? <LecturerDashboard /> : <Navigate to="/" />} />
+          <Route path="/student/dashboard" element={isAuthenticated && userRole === 'student' ? <StudentDashboard /> : <Navigate to="/" />} />
+          {/* Admin 관련 페이지 */}
+          <Route path="/admin/courses" element={isAuthenticated && userRole === 'admin' ? <CourseManagement /> : <Navigate to="/" />} />
+          <Route path="/admin/semesters" element={isAuthenticated && userRole === 'admin' ? <SemesterManagement /> : <Navigate to="/" />} />
+          <Route path="/admin/classes" element={isAuthenticated && userRole === 'admin' ? <ClassManagement /> : <Navigate to="/" />} />
+          <Route path="/admin/lecturers" element={isAuthenticated && userRole === 'admin' ? <LecturerManagement /> : <Navigate to="/" />} />
+          <Route path="/admin/students" element={isAuthenticated && userRole === 'admin' ? <StudentManagement /> : <Navigate to="/" />} />
+        </Routes>
       </main>
     </>
   );

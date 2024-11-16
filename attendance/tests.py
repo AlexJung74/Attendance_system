@@ -1,4 +1,4 @@
-# attendance/views/tests.py
+# attendance/tests.py
 
 from django.test import TestCase, Client
 from django.urls import reverse

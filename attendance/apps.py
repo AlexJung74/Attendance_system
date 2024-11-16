@@ -1,4 +1,4 @@
-# attendance/views/apps.py
+# attendance/apps.py
 
 from django.apps import AppConfig
 

@@ -1,4 +1,4 @@
-# admin_views.py
+# attendance/views/admin_views.py
 
 import logging
 
@@ -13,6 +13,8 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.decorators.http import require_GET
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView, DetailView
+
+
 
 from attendance.models import Semester, Course, Class, Lecturer, Student, Attendance, CollegeDay
 from attendance.utils import (
@@ -31,23 +33,20 @@ logger = logging.getLogger('attendance')
 
 # 관리자 대시보드 (클래스형 뷰) - TokenAuthentication 사용
 class AdminDashboardView(APIView):
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # 필요 시 추가 데이터 구성
-        lecturers = Lecturer.objects.all()
-        courses = Course.objects.all()
-        classes = Class.objects.all()
-        semesters = Semester.objects.all()
+        lecturers = Lecturer.objects.values("id", "user__first_name", "user__last_name")
+        courses = Course.objects.values("id", "name", "code")
+        classes = Class.objects.values("id", "number", "course__name")
+        semesters = Semester.objects.values("id", "year", "semester")
 
-        context = {
-            'lecturers': lecturers,
-            'courses': courses,
-            'classes': classes,
-            'semesters': semesters,
-        }
-        return JsonResponse(context)
+        return Response({
+            "lecturers": list(lecturers),
+            "courses": list(courses),
+            "classes": list(classes),
+            "semesters": list(semesters),
+        })
 
 
 # 학기 관리 뷰

@@ -68,7 +68,8 @@ body {
   display: flex;
   justify-content: center; /* 가로 방향 가운데 정렬 */
   align-items: center; /* 세로 방향 가운데 정렬 */
-  padding: 20px;
+  padding: 70px 20px 20px;
+  min-height: 100vh;
   background-color: #f8f9fa; /* 기본 배경색 */
 }
 

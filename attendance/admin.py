@@ -1,4 +1,4 @@
-# attendance/views/admin.py
+# attendance/admin.py
 
 from django.contrib import admin
 from .models import Lecturer, Student, Course, Semester, Class, CollegeDay, ClassStudent, Attendance

@@ -1,4 +1,4 @@
-# attendance/views/utils.py
+# attendance/utils.py
 
 import logging
 

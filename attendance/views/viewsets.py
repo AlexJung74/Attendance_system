@@ -1,3 +1,5 @@
+# attendance/views/viewsets.py
+
 from rest_framework import viewsets
 from attendance.models import Course, Semester, Lecturer, Student, Class, CollegeDay, Attendance
 from attendance.serializers import (
