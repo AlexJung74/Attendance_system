@@ -45,12 +45,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:8000",
     "http://localhost:5173",
-    "https://attendance-system-theta-coral.vercel.app/",
+    "https://attendance-system-theta-coral.vercel.app",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
-    "https://attendance-system-theta-coral.vercel.app/",
+    "https://attendance-system-theta-coral.vercel.app",
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -154,20 +154,13 @@ LOGGING_CONFIG = None
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
         },
     },
     'root': {
         'handlers': ['console'],
-        'level': 'DEBUG' if DEBUG else 'INFO',
+        'level': 'DEBUG',
     },
 }
