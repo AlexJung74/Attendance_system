@@ -6,7 +6,7 @@ import dj_database_url
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'ttendance-system-backend-theta.vercel.app/',  # 프로덕션 백엔드 도메인
+    'attendance-system-backend-theta.vercel.app/',  # 프로덕션 백엔드 도메인
     'attendance-system-theta-coral.vercel.app',  # 프로덕션 프론트엔드 도메인
 ]
 
