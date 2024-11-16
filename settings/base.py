@@ -1,5 +1,4 @@
 import os
-import locale
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
@@ -8,13 +7,6 @@ from datetime import timedelta
 from dotenv import load_dotenv
 load_dotenv()
 
-# 강제로 UTF-8 설정 및 에러 처리
-try:
-    locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
-    os.environ['PYTHONIOENCODING'] = 'utf-8'
-    os.environ['LC_ALL'] = 'en_US.UTF-8'
-except locale.Error:
-    locale.setlocale(locale.LC_ALL, '')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
