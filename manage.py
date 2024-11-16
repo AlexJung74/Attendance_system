@@ -1,12 +1,15 @@
+# manage.py
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from django.core.wsgi import get_wsgi_application
+
+app = get_wsgi_application()  # Vercel이 사용할 수 있도록 app 변수 정의
 
 
 def main():
     """Run administrative tasks."""
-#    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.production')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings.production')
     try:
         from django.core.management import execute_from_command_line
