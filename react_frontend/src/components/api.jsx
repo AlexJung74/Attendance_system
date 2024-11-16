@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api',
 });
 
 // Request 인터셉터: 모든 요청에 인증 토큰 추가

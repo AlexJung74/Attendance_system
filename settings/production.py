@@ -5,10 +5,16 @@ import dj_database_url
 
 DEBUG = False
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = [
+    'attendance-system-asg1.vercel.app',  # 프로덕션 백엔드 도메인
+    'attendance-system-theta-coral.vercel.app',  # 프로덕션 프론트엔드 도메인
+]
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'), conn_max_age=600, ssl_require=True)
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=True)
 }
 
 LOGGING = {
