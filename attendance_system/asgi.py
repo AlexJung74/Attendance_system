@@ -22,7 +22,7 @@ try:
     application = get_asgi_application()
     logger.debug("ASGI application loaded successfully.")
 except Exception as e:
-    logger.error("Error loading ASGI application: %s", e)
+    logger.exception("Error loading ASGI application")  # Stack trace 포함
     raise e
 
 # Vercel 호환성을 위한 handler 변수
