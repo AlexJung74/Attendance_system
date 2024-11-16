@@ -2,7 +2,7 @@
 
 from .base import *
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']  # 개발 환경에서만 사용
 
 DATABASES = {
     'default': {

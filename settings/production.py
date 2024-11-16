@@ -25,4 +25,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
+# ASGI 전환 확인용 디버깅 메시지 추가
+print("DEBUG: Running ASGI production settings")
 

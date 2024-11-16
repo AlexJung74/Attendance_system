@@ -14,3 +14,6 @@ from django.core.asgi import get_asgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'attendance_system.settings')
 
 application = get_asgi_application()
+
+# Vercel 호환성을 위한 handler 변수
+handler = application
