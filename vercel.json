@@ -1,12 +1,27 @@
 {
   "version": 2,
   "builds": [
-    { "src": "attendance_system/wsgi.py", "use": "@vercel/python" },
-    { "src": "staticfiles/**/*", "use": "@vercel/static" }
+    {
+      "src": "attendance_system/wsgi.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "staticfiles/**/*",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "attendance_system/wsgi.py" },
-    { "src": "/static/(.*)", "dest": "/staticfiles/$1" },
-    { "src": "/(.*)", "dest": "attendance_system/wsgi.py" }
+    {
+      "src": "/api/(.*)",
+      "dest": "attendance_system/wsgi.py"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/staticfiles/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "attendance_system/wsgi.py"
+    }
   ]
 }
