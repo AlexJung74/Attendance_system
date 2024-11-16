@@ -151,18 +151,28 @@ LOGOUT_REDIRECT_URL = 'login'
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# 콘솔로만 로그 기록
-LOGGING_CONFIG = None
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'handlers': {
         'console': {
-            'class': 'logging.StreamHandler',
+            'class': 'logging.StreamHandler',  # 표준 출력으로 출력
         },
     },
     'root': {
         'handlers': ['console'],
-        'level': 'DEBUG',
+        'level': 'DEBUG',  # DEBUG 레벨의 모든 로그를 출력
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'my_app': {  # 필요 시 앱 별도 로거
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
 }
