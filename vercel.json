@@ -10,6 +10,7 @@
       "use": "@vercel/static"
     }
   ],
+  "installCommand": "apt-get update && apt-get install -y libpq-dev && pip install --no-cache-dir -r requirements.txt",
   "routes": [
     {
       "src": "/api/(.*)",
@@ -23,5 +24,9 @@
       "src": "/(.*)",
       "dest": "attendance_system/asgi.py"
     }
-  ]
+  ],
+  "env": {
+    "PYTHONUNBUFFERED": "1",
+    "PYTHONPATH": "./attendance_system"
+  }
 }
