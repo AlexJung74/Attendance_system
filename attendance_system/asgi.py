@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/
 """
 
 import os
+import sys
 import logging
 from django.core.asgi import get_asgi_application
 
@@ -27,5 +28,6 @@ except Exception as e:
     logger.error("Error loading ASGI application: %s", e)
     raise e
 
-# Vercel 호환성을 위한 핸들러 설정
-handler = application
+# Vercel 호환성을 위한 handler 직접 명시
+if "vercel" in sys.modules:
+    handler = application

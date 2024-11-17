@@ -3,11 +3,10 @@
   "builds": [
     {
       "src": "attendance_system/asgi.py",
-      "use": "@vercel/python"
-    },
-    {
-      "src": "staticfiles/**/*",
-      "use": "@vercel/static"
+      "use": "@vercel/python",
+      "config": {
+        "zeroConfig": true
+      }
     }
   ],
   "routes": [
@@ -16,15 +15,8 @@
       "dest": "attendance_system/asgi.py"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "/staticfiles/$1"
-    },
-    {
       "src": "/(.*)",
       "dest": "attendance_system/asgi.py"
     }
-  ],
-  "env": {
-    "PYTHON_VERSION": "3.11"
-  }
+  ]
 }
