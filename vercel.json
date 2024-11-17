@@ -23,5 +23,8 @@
       "src": "/(.*)",
       "dest": "attendance_system/asgi.py"
     }
-  ]
+  ],
+  "env": {
+    "PYTHON_VERSION": "3.11"
+  }
 }

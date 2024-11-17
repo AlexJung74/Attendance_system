@@ -17,7 +17,8 @@ print("ASGI application is being loaded.")
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.production")
+# Django 환경 설정
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "attendance_system.settings.production")
 
 try:
     application = get_asgi_application()

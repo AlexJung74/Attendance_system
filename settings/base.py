@@ -142,8 +142,12 @@ EMAIL_HOST_PASSWORD = 'zrbb vvxx sfwm xdad'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'attendance', 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # collectstatic에서 사용
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'attendance', 'static')  # 추가적인 정적 파일 디렉토리
+]
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
