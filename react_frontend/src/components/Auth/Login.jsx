@@ -16,7 +16,10 @@ function Login() {
     console.log('Attempting login with:', { username, password });
 
     try {
-      const response = await axios.post('http://localhost:8000/api/auth/login/', { username, password });
+      const response = await axios.post(
+        `${process.env.VITE_BACKEND_URL}/api/auth/login/`,
+        { username, password }
+      );
       console.log('Login successful, response data:', response.data);
 
       // accessToken과 refreshToken을 정확한 키로 localStorage에 저장

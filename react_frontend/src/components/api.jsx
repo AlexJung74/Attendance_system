@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000/api',
+  baseURL: process.env.VITE_BACKEND_URL || 'http://localhost:8000/api',
 });
 
 // Request 인터셉터: 모든 요청에 인증 토큰 추가
@@ -31,23 +31,24 @@ api.interceptors.response.use(
 
       if (refreshToken) {
         try {
-          const response = await axios.post('http://localhost:8000/api/token/refresh/', {
-            refresh: refreshToken,
-          });
+          const response = await axios.post(
+            `${process.env.VITE_BACKEND_URL}/api/token/refresh/`,
+            { refresh: refreshToken }
+          );
           localStorage.setItem('accessToken', response.data.access);
           originalRequest.headers.Authorization = `Bearer ${response.data.access}`;
-          return api(originalRequest);  // 요청 재시도
+          return api(originalRequest); // 요청 재시도
         } catch (refreshError) {
           console.error('Token refresh failed:', refreshError);
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
-          window.location.href = '/';  // 로그인 화면으로 이동
+          window.location.href = '/'; // 로그인 화면으로 이동
         }
       } else {
         console.warn('No refresh token found. Logging out.');
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/';  // 로그인 화면으로 이동
+        window.location.href = '/'; // 로그인 화면으로 이동
       }
     }
     return Promise.reject(error);
