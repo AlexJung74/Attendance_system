@@ -36,14 +36,15 @@ LOGGING = {
             'format': '%(levelname)s %(asctime)s %(module)s %(message)s'
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',  # 필요시 DEBUG로 변경
-    },
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': 'INFO',
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'asgi': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
             'propagate': False,
         },
     },
