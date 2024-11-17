@@ -6,6 +6,7 @@ DEBUG = False  # 프로덕션 환경에서는 False로 설정
 ALLOWED_HOSTS = [
     'attendance-system-backend-theta.vercel.app',
     'attendance-system-frontend-seven.vercel.app',
+    'attendance-backend-40491d7871de.herokuapp.com,'
     'localhost', '127.0.0.1'
 ]
 
