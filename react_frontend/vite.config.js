@@ -9,6 +9,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   return {
+    base: '/react_frontend/', // 애플리케이션의 기본 경로 설정
+
     plugins: [react()],
     server: {
       // 서버 설정

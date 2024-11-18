@@ -2,19 +2,19 @@
   "version": 2,
   "builds": [
     {
-      "src": "index.html",
+      "src": "dist/index.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/dist/$1"
     }
   ],
   "headers": [
     {
-      "source": "/(.*).js",
+      "source": "/dist/(.*).js",
       "headers": [
         {
           "key": "Content-Type",
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "source": "/(.*).css",
+      "source": "/dist/(.*).css",
       "headers": [
         {
           "key": "Content-Type",
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "source": "/(.*).woff2",
+      "source": "/dist/(.*).woff2",
       "headers": [
         {
           "key": "Content-Type",
