@@ -2,19 +2,19 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/index.html",
-      "use": "@vercel/static"
+      "src": "src/**/*",
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/dist/$1"
+      "dest": "/react_frontend/$1"
     }
   ],
   "headers": [
     {
-      "source": "/dist/(.*).js",
+      "source": "/react_frontend/(.*).js",
       "headers": [
         {
           "key": "Content-Type",
@@ -23,7 +23,7 @@
       ]
     },
     {
-      "source": "/dist/(.*).css",
+      "source": "/react_frontend/(.*).css",
       "headers": [
         {
           "key": "Content-Type",
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "source": "/dist/(.*).woff2",
+      "source": "/react_frontend/(.*).woff2",
       "headers": [
         {
           "key": "Content-Type",
