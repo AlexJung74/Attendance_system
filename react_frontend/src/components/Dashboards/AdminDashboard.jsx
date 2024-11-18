@@ -1,5 +1,3 @@
-// src/components/Dashboards/AdminDashboard.jsx
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
@@ -79,24 +77,67 @@ function AdminDashboard() {
         </button>
       </div>
       <div className="row">
+        {/* Courses Section */}
         <div className="col-md-6">
           <h3>Courses</h3>
           <ul className="list-group">
-            {courses.map((course) => (
-              <li key={course.id} className="list-group-item">
-                {course.name} ({course.code})
-              </li>
-            ))}
+            {courses.length > 0 ? (
+              courses.map((course) => (
+                <li key={course.id} className="list-group-item">
+                  {course.name || "N/A"} ({course.code || "N/A"})
+                </li>
+              ))
+            ) : (
+              <li className="list-group-item">No courses available.</li>
+            )}
           </ul>
         </div>
+
+        {/* Lecturers Section */}
         <div className="col-md-6">
           <h3>Lecturers</h3>
           <ul className="list-group">
-            {lecturers.map((lecturer) => (
-              <li key={lecturer.id} className="list-group-item">
-                {lecturer.user.first_name} {lecturer.user.last_name}
-              </li>
-            ))}
+            {lecturers.length > 0 ? (
+              lecturers.map((lecturer) => (
+                <li key={lecturer.id} className="list-group-item">
+                  {lecturer.user?.first_name || "N/A"} {lecturer.user?.last_name || "N/A"}
+                </li>
+              ))
+            ) : (
+              <li className="list-group-item">No lecturers available.</li>
+            )}
+          </ul>
+        </div>
+
+        {/* Classes Section */}
+        <div className="col-md-6">
+          <h3>Classes</h3>
+          <ul className="list-group">
+            {classes.length > 0 ? (
+              classes.map((classItem) => (
+                <li key={classItem.id} className="list-group-item">
+                  {classItem.number || "N/A"} - {classItem.course?.name || "N/A"}
+                </li>
+              ))
+            ) : (
+              <li className="list-group-item">No classes available.</li>
+            )}
+          </ul>
+        </div>
+
+        {/* Semesters Section */}
+        <div className="col-md-6">
+          <h3>Semesters</h3>
+          <ul className="list-group">
+            {semesters.length > 0 ? (
+              semesters.map((semester) => (
+                <li key={semester.id} className="list-group-item">
+                  {semester.year || "N/A"} - {semester.semester || "N/A"}
+                </li>
+              ))
+            ) : (
+              <li className="list-group-item">No semesters available.</li>
+            )}
           </ul>
         </div>
       </div>

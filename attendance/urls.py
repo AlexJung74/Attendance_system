@@ -4,6 +4,8 @@ from django.urls import path, include
 import logging
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
+
+from .views.admin_views import AdminDashboardView
 from .views.api import (
     CourseViewSet, SemesterViewSet, LecturerViewSet,
     StudentViewSet, ClassViewSet, CollegeDayViewSet, AttendanceViewSet
@@ -31,6 +33,11 @@ urlpatterns = [
     # 사용자 인증 API 엔드포인트
     path('api/auth/login/', CustomAuthToken.as_view(), name='token_obtain_pair'),  # CustomAuthToken을 로그인 엔드포인트로 사용
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # 리프레시 토큰 엔드포인트
+
+    # 대시보드 엔드포인트 추가
+    path('api/admin/dashboard/', AdminDashboardView.as_view(), name='admin_dashboard'),
+    # path('api/lecturer/dashboard/', LecturerDashboardView.as_view(), name='lecturer_dashboard'),
+    # path('api/student/dashboard/', StudentDashboardView.as_view(), name='student_dashboard'),
 
     # REST API 엔드포인트
     path('api/', include(router.urls)),

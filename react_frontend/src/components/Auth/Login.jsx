@@ -14,6 +14,7 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
     console.log('Attempting login with:', { username, password });
+    console.log('Backend URL:', process.env.VITE_BACKEND_URL);
 
     try {
       const response = await axios.post(

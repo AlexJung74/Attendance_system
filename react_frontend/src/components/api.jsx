@@ -2,8 +2,13 @@
 
 import axios from 'axios';
 
+console.log('Backend URL:', process.env.VITE_BACKEND_URL);
+const baseURL = process.env.VITE_BACKEND_URL?.endsWith('/api')
+  ? process.env.VITE_BACKEND_URL
+  : `${process.env.VITE_BACKEND_URL || 'http://localhost:8000'}/api`;
+
 const api = axios.create({
-  baseURL: process.env.VITE_BACKEND_URL || 'http://localhost:8000/api',
+  baseURL,
 });
 
 // Request 인터셉터: 모든 요청에 인증 토큰 추가
@@ -32,7 +37,7 @@ api.interceptors.response.use(
       if (refreshToken) {
         try {
           const response = await axios.post(
-            `${process.env.VITE_BACKEND_URL}/api/token/refresh/`,
+            `${baseURL}/token/refresh/`,
             { refresh: refreshToken }
           );
           localStorage.setItem('accessToken', response.data.access);
@@ -40,19 +45,19 @@ api.interceptors.response.use(
           return api(originalRequest); // 요청 재시도
         } catch (refreshError) {
           console.error('Token refresh failed:', refreshError);
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
-          window.location.href = '/'; // 로그인 화면으로 이동
+          alert('Your session has expired. Please log in again.');
+          localStorage.clear(); // 모든 로컬 스토리지 데이터 삭제
+          window.location.href = '/'; // 로그인 화면으로 리디렉션
         }
       } else {
-        console.warn('No refresh token found. Logging out.');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/'; // 로그인 화면으로 이동
+        alert('Authentication required. Please log in.');
+        localStorage.clear();
+        window.location.href = '/';
       }
     }
     return Promise.reject(error);
   }
 );
+
 
 export default api;

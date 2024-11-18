@@ -5,16 +5,16 @@ from pathlib import Path
 from decouple import config
 from datetime import timedelta
 
-# Load environment variables from .env file (optional)
 from dotenv import load_dotenv
 load_dotenv()
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1').split(',') + [
+    'attendance-system-backend-theta.vercel.app'
+]
 
 SESSION_SAVE_EVERY_REQUEST = False
 
@@ -48,11 +48,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://127.0.0.1:8001",
     "http://localhost:5173",
+    "http://localhost:5174",
     'https://attendance-system-frontend-seven.vercel.app',
 ]
+
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
+    "http://localhost:5174",
     "http://127.0.0.1:8001",
     'https://attendance-system-frontend-seven.vercel.app',
 ]
@@ -86,9 +89,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
+
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # 테스트 시 30분으로 연장
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
     'AUTH_HEADER_TYPES': ('Bearer',),
@@ -146,8 +150,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # collectstatic에서 사�
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'attendance', 'static')  # 추가적인 정적 파일 디렉토리
 ]
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
