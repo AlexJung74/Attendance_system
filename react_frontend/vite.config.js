@@ -6,7 +6,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   return {
-    base: '/', // Vercel에서 배포 시 기본 경로를 '/'로 설정
+    base: '/', // 기본 경로로 설정
 
     plugins: [react()],
     server: {
@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
     build: {
-      outDir: 'dist', // 빌드 출력 디렉토리
+      outDir: 'dist',
       sourcemap: true,
       rollupOptions: {
         output: {
