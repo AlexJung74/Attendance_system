@@ -11,34 +11,5 @@
       "src": "/(.*)",
       "dest": "/react_frontend/$1"
     }
-  ],
-  "headers": [
-    {
-      "source": "/react_frontend/(.*).js",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/javascript"
-        }
-      ]
-    },
-    {
-      "source": "/react_frontend/(.*).css",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/css"
-        }
-      ]
-    },
-    {
-      "source": "/react_frontend/(.*).woff2",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "font/woff2"
-        }
-      ]
-    }
   ]
 }
