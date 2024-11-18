@@ -1,3 +1,18 @@
+/* src/App.css */
+
+/* 기본 레이아웃 */
+.main-frame {
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+/* Admin 전용 Sub Frame */
+.sub-frame {
+  border-right: 1px solid #ddd;
+  background-color: #ffffff;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -93,4 +108,9 @@ body {
 /* 버튼 스타일 조정 */
 .navbar .btn-link.nav-link {
   padding: 5px 10px; /* 버튼의 상하 5px, 좌우 10px 패딩 */
+}
+
+.content-frame {
+  padding: 20px;
+  min-height: calc(100vh - 70px); /* Navbar 높이를 제외한 전체 높이 */
 }

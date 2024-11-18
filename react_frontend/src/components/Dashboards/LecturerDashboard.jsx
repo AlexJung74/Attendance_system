@@ -1,28 +1,63 @@
-// src/components/Lecturer/LecturerDashboard.jsx
+// src/components/Dashboards/LecturerDashboard.jsx
 
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api';
 
 function LecturerDashboard() {
-    const [classes, setClasses] = useState([]);
+  const [classes, setClasses] = useState([]);
 
-    useEffect(() => {
-        axios.get('/api/lecturer/classes/', { headers: { Authorization: `Token ${localStorage.getItem('token')}` } })
-            .then(response => setClasses(response.data))
-            .catch(error => console.error('Error fetching classes:', error));
-    }, []);
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const response = await api.get('/lecturer/classes/');
+        setClasses(response.data);
+      } catch (error) {
+        console.error('Error fetching lecturer classes:', error);
+      }
+    };
 
-    return (
-        <div>
-            <h1>Lecturer Dashboard</h1>
-            <h2>Your Classes</h2>
-            <ul>
-                {classes.map(classItem => (
-                    <li key={classItem.id}>{classItem.course.name} - Class {classItem.number}</li>
-                ))}
-            </ul>
-        </div>
-    );
+    fetchClasses();
+  }, []);
+
+  return (
+    <div className="container mt-4">
+      <h1>Lecturer Dashboard</h1>
+      <h2>Your Classes</h2>
+      <table className="table table-bordered table-hover">
+        <thead className="thead-light">
+          <tr>
+            <th>Class Number</th>
+            <th>Course</th>
+            <th>Semester</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {classes.length > 0 ? (
+            classes.map((classItem) => (
+              <tr key={classItem.id}>
+                <td>{classItem.number}</td>
+                <td>{classItem.course.name}</td>
+                <td>{classItem.semester.year} {classItem.semester.semester}</td>
+                <td>
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => window.location.href = `/attendance-check/${classItem.id}`}
+                  >
+                    Check Attendance
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="4" className="text-center">No classes available.</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export default LecturerDashboard;

@@ -1,157 +1,137 @@
-import { useEffect, useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../api.jsx';
+import { useState } from "react";
+import useFetch from "../shared/useFetch";
+import Table from "../shared/Table";
+import Form from "../shared/Form";
+import ConfirmDialog from "../shared/ConfirmDialog";
+import api from "../api.jsx";
 
 function CourseManagement() {
-  const [courses, setCourses] = useState([]);
-  const [formData, setFormData] = useState({ id: null, code: '', name: '' });
+  const { data: courses, isLoading, error } = useFetch("/courses/");
+  console.log("[CourseManagement] Fetched courses data:", courses); // courses 데이터 확인
+
+  const [confirmDialog, setConfirmDialog] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [formData, setFormData] = useState({ id: null, code: "", name: "" });
   const [isEditing, setIsEditing] = useState(false);
-  const navigate = useNavigate();
 
-  // 코스 목록 가져오기
-  const fetchCourses = useCallback(async () => {
+  const confirmDelete = (id) => {
+    setDeleteId(id);
+    setConfirmDialog(true);
+  };
+
+  const handleDelete = async () => {
     try {
-      const response = await api.get('/courses/', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-      });
-      setCourses(response.data);
+      await api.delete(`/courses/${deleteId}/`);
+      setConfirmDialog(false);
+      window.location.reload(); // Reload to fetch updated courses list
     } catch (error) {
-      console.error('Error fetching courses:', error);
-      if (error.response && error.response.status === 401) {
-        navigate('/'); // 인증 실패 시 로그인 페이지로 리디렉션
-      }
+      console.error("Error deleting course:", error);
     }
-  }, [navigate]);
+  };
 
-  // 폼 데이터 초기화
   const resetForm = () => {
-    setFormData({ id: null, code: '', name: '' });
+    setFormData({ id: null, code: "", name: "" });
     setIsEditing(false);
   };
 
-  // 코스 생성/업데이트 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (isEditing) {
-        await api.put(`/courses/${formData.id}/`, formData, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-        });
+        await api.put(`/courses/${formData.id}/`, formData);
       } else {
-        await api.post('/courses/', formData, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-        });
+        await api.post("/courses/", formData);
       }
-      fetchCourses();
       resetForm();
+      window.location.reload();
     } catch (error) {
-      console.error('Error saving course:', error);
+      console.error("Error saving course:", error);
     }
   };
 
-  // 코스 수정 핸들러
   const handleEdit = (course) => {
     setFormData({ id: course.id, code: course.code, name: course.name });
     setIsEditing(true);
   };
 
-  // 코스 삭제 핸들러
-  const handleDelete = async (courseId) => {
-    if (window.confirm('Are you sure you want to delete this course?')) {
-      try {
-        await api.delete(`/courses/${courseId}/`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-        });
-        fetchCourses();
-      } catch (error) {
-        console.error('Error deleting course:', error);
-      }
-    }
-  };
+  const tableHeaders = ["Code", "Name", "Actions"];
+  const tableData = courses?.map((course) => ({
+    id: course.id,
+    Code: course.code,
+    Name: course.name,
+    Actions: (
+      <>
+        <button
+          className="btn btn-secondary btn-sm me-2"
+          onClick={() => handleEdit(course)}
+        >
+          Edit
+        </button>
+        <button
+          className="btn btn-danger btn-sm"
+          onClick={() => confirmDelete(course.id)}
+        >
+          Delete
+        </button>
+      </>
+    ),
+  }));
 
-  // 컴포넌트가 처음 렌더링될 때 코스 데이터를 가져옴
-  useEffect(() => {
-    fetchCourses();
-  }, [fetchCourses]);
+  console.log("[CourseManagement] Table data:", tableData); // 테이블 데이터 확인
+
+  const formFields = {
+    code: {
+      label: "Course Code",
+      id: "code",
+      type: "text",
+      value: formData.code,
+      onChange: (e) => setFormData({ ...formData, code: e.target.value }),
+      required: true,
+    },
+    name: {
+      label: "Course Name",
+      id: "name",
+      type: "text",
+      value: formData.name,
+      onChange: (e) => setFormData({ ...formData, name: e.target.value }),
+      required: true,
+    },
+  };
 
   return (
     <div className="container mt-4">
       <h1>Course Management</h1>
-      <div className="row">
-        {/* Course Form Section */}
-        <div className="col-md-6">
-          <h2>{isEditing ? 'Edit Course' : 'Add New Course'}</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="code" className="form-label">Course Code</label>
-              <input
-                type="text"
-                id="code"
-                name="code"
-                value={formData.code}
-                onChange={(e) => setFormData({ ...formData, code: e.target.value })}
-                className="form-control"
-                required
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-danger">Error loading data. Check console logs.</p>
+      ) : (
+        <>
+          <div className="row">
+            <div className="col-md-6">
+              <h2>{isEditing ? "Edit Course" : "Add New Course"}</h2>
+              <Form
+                fields={formFields}
+                onSubmit={handleSubmit}
+                onCancel={resetForm}
+                submitText={isEditing ? "Update" : "Save"}
+                cancelText="Cancel"
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">Course Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="form-control"
-                required
-              />
+            <div className="col-md-6">
+              <h2>Course List</h2>
+              <Table headers={tableHeaders} data={tableData} />
             </div>
-            <button type="submit" className="btn btn-primary">{isEditing ? 'Update' : 'Save'}</button>
-            <button type="button" className="btn btn-secondary ms-2" onClick={resetForm}>Cancel</button>
-          </form>
-        </div>
-
-        {/* Course List Section */}
-        <div className="col-md-6">
-          <h2>Course List</h2>
-          <table className="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Code</th>
-                <th>Name</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {courses.map((course) => (
-                <tr key={course.id}>
-                  <td>{course.code}</td>
-                  <td>{course.name}</td>
-                  <td>
-                    <button
-                      className="btn btn-secondary btn-sm me-2"
-                      onClick={() => handleEdit(course)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(course.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {!courses.length && (
-                <tr>
-                  <td colSpan="3" className="text-center">No courses available</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+          </div>
+        </>
+      )}
+      {confirmDialog && (
+        <ConfirmDialog
+          message="Are you sure you want to delete this course?"
+          onConfirm={handleDelete}
+          onCancel={() => setConfirmDialog(false)}
+        />
+      )}
     </div>
   );
 }

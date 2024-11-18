@@ -1,172 +1,161 @@
-import  { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import api from '../api.jsx';
+// src/components/Admin/SemesterManagement.jsx
+
+import { useState } from "react";
+import useFetch from "../shared/useFetch";
+import ConfirmDialog from "../shared/ConfirmDialog";
+import api from "../api.jsx";
 
 function SemesterManagement() {
-  const [semesters, setSemesters] = useState([]);
-  const [formData, setFormData] = useState({ year: '', semester: '' });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editId, setEditId] = useState(null);
-    // eslint-disable-next-line no-unused-vars
-  const navigate = useNavigate();
+  const {
+    data: semesters,
+    isLoading,
+    error,
+  } = useFetch("/semesters/");
 
-  // 학기 목록 가져오기
-  const fetchSemesters = async () => {
+  const [confirmDialog, setConfirmDialog] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const [formData, setFormData] = useState({ id: null, year: "", semester: "" });
+  const [isEditing, setIsEditing] = useState(false);
+
+  const confirmDelete = (id) => {
+    setDeleteId(id);
+    setConfirmDialog(true);
+  };
+
+  const handleDelete = async () => {
     try {
-      const response = await api.get('/semesters/', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-      });
-      setSemesters(response.data);
+      await api.delete(`/semesters/${deleteId}/`);
+      setConfirmDialog(false);
+      window.location.reload();
     } catch (error) {
-      console.error('Error fetching semesters:', error);
+      console.error("Error deleting semester:", error);
     }
   };
 
-  useEffect(() => {
-    fetchSemesters();
-  }, []);
-
-  // 폼 데이터 변경 핸들러
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  const resetForm = () => {
+    setFormData({ id: null, year: "", semester: "" });
+    setIsEditing(false);
   };
 
-  // 폼 제출 핸들러 (생성 또는 수정)
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (isEditing) {
-        await api.put(`/semesters/${editId}/`, formData, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-        });
+        await api.put(`/semesters/${formData.id}/`, formData);
       } else {
-        await api.post('/semesters/', formData, {
-          headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-        });
+        await api.post("/semesters/", formData);
       }
-      setFormData({ year: '', semester: '' }); // 폼 초기화
-      setIsEditing(false);
-      setEditId(null);
-      fetchSemesters(); // 목록 갱신
+      resetForm();
+      window.location.reload();
     } catch (error) {
-      console.error('Error saving semester:', error);
+      console.error("Error saving semester:", error);
     }
   };
 
-  // 수정 모드 활성화
   const handleEdit = (semester) => {
-    setFormData({ year: semester.year, semester: semester.semester });
+    setFormData({ id: semester.id, year: semester.year, semester: semester.semester });
     setIsEditing(true);
-    setEditId(semester.id);
-  };
-
-  // 삭제 핸들러
-  const handleDelete = async (id) => {
-    try {
-      await api.delete(`/semesters/${id}/`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-      });
-      fetchSemesters(); // 목록 갱신
-    } catch (error) {
-      console.error('Error deleting semester:', error);
-    }
   };
 
   return (
-    <div className="container">
-      <h2>Semester Management</h2>
+    <div className="container mt-4">
+      <h1>Semester Management</h1>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-danger">Error loading data. Check console logs.</p>
+      ) : (
+        <div className="row">
+          {/* Form Section */}
+          <div className="col-md-6">
+            <h2>{isEditing ? "Edit Semester" : "Add New Semester"}</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="year" className="form-label">Year</label>
+                <input
+                  type="number"
+                  id="year"
+                  name="year"
+                  value={formData.year}
+                  onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+                  className="form-control"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="semester" className="form-label">Semester</label>
+                <select
+                  id="semester"
+                  name="semester"
+                  value={formData.semester}
+                  onChange={(e) => setFormData({ ...formData, semester: e.target.value })}
+                  className="form-control"
+                  required
+                >
+                  <option value="">-- Select Semester --</option>
+                  <option value="Sem1">Semester 1</option>
+                  <option value="Sem2">Semester 2</option>
+                </select>
+              </div>
+              <button type="submit" className="btn btn-primary">
+                {isEditing ? "Update" : "Save"}
+              </button>
+              <button type="button" className="btn btn-secondary ms-2" onClick={resetForm}>
+                Cancel
+              </button>
+            </form>
+          </div>
 
-      {/* 리스트 */}
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Year</th>
-            <th>Semester</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {semesters.length > 0 ? (
-            semesters.map((semester) => (
-              <tr key={semester.id}>
-                <td>{semester.year}</td>
-                <td>{semester.semester}</td>
-                <td>
-                  <button
-                    className="btn btn-secondary btn-sm me-2"
-                    onClick={() => handleEdit(semester)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDelete(semester.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">No semesters available.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-      {/* 폼 */}
-      <h3>{isEditing ? 'Edit Semester' : 'Add Semester'}</h3>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="year" className="form-label">
-            Year
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="year"
-            name="year"
-            value={formData.year}
-            onChange={handleChange}
-            required
-          />
+          {/* Table Section */}
+          <div className="col-md-6">
+            <h2>Semester List</h2>
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>Year</th>
+                  <th>Semester</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {semesters?.map((semester) => (
+                  <tr key={semester.id}>
+                    <td>{semester.year}</td>
+                    <td>{semester.semester}</td>
+                    <td>
+                      <button
+                        className="btn btn-secondary btn-sm me-2"
+                        onClick={() => handleEdit(semester)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => confirmDelete(semester.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {(!semesters || semesters.length === 0) && (
+                  <tr>
+                    <td colSpan="3" className="text-center">No semesters available</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="semester" className="form-label">
-            Semester
-          </label>
-          <select
-            className="form-control"
-            id="semester"
-            name="semester"
-            value={formData.semester}
-            onChange={handleChange}
-            required
-          >
-            <option value="">-- Select Semester --</option>
-            <option value="Sem1">Semester 1</option>
-            <option value="Sem2">Semester 2</option>
-          </select>
-        </div>
-        <button type="submit" className="btn btn-success">
-          {isEditing ? 'Update' : 'Save'}
-        </button>
-        {isEditing && (
-          <button
-            type="button"
-            className="btn btn-secondary ms-2"
-            onClick={() => {
-              setFormData({ year: '', semester: '' });
-              setIsEditing(false);
-              setEditId(null);
-            }}
-          >
-            Cancel
-          </button>
-        )}
-      </form>
+      )}
+      {/* Confirm Dialog */}
+      {confirmDialog && (
+        <ConfirmDialog
+          message="Are you sure you want to delete this semester?"
+          onConfirm={handleDelete}
+          onCancel={() => setConfirmDialog(false)}
+        />
+      )}
     </div>
   );
 }

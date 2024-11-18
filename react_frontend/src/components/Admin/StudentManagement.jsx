@@ -1,256 +1,196 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
+import useFetch from "../shared/useFetch";
+import Table from "../shared/Table";
+import Form from "../shared/Form";
+import ConfirmDialog from "../shared/ConfirmDialog";
 import api from "../api.jsx";
 
 function StudentManagement() {
-  const [students, setStudents] = useState([]);
+  const { data: students, isLoading, error } = useFetch("/students/");
+  const [confirmDialog, setConfirmDialog] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
   const [formData, setFormData] = useState({
     id: null,
-    username: "",
-    studentId: "",
-    DOB: "",
+    student_id: "",
+    first_name: "",
+    last_name: "",
+    email: "",
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [file, setFile] = useState(null);
-  const [error, setError] = useState(null); // 에러 메시지 저장
+  const [uploadError, setUploadError] = useState(null);
+  const [uploadSuccess, setUploadSuccess] = useState(null);
 
-  // 학생 목록 가져오기
-  const fetchStudents = useCallback(async () => {
+  const confirmDelete = (id) => {
+    setDeleteId(id);
+    setConfirmDialog(true);
+  };
+
+  const handleDelete = async () => {
     try {
-      const response = await api.get("/students/", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-      });
-      setStudents(response.data);
+      await api.delete(`/students/${deleteId}/`);
+      setConfirmDialog(false);
+      window.location.reload();
     } catch (error) {
-      console.error("Error fetching students:", error);
-      setError("Failed to fetch students. Please try again later.");
+      console.error("Error deleting student:", error);
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    fetchStudents();
-  }, [fetchStudents]);
-
-  // 폼 초기화
   const resetForm = () => {
     setFormData({
       id: null,
-      username: "",
-      studentId: "",
-      DOB: "",
+      student_id: "",
+      first_name: "",
+      last_name: "",
+      email: "",
     });
     setIsEditing(false);
-    setError(null);
   };
 
-  // 학생 추가/편집
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (isEditing) {
-        await api.put(
-          `/students/${formData.id}/`,
-          {
-            username: formData.username,
-            studentId: formData.studentId,
-            DOB: formData.DOB,
-          },
-          {
-            headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-          }
-        );
+        await api.put(`/students/${formData.id}/`, formData);
       } else {
-        await api.post(
-          "/students/",
-          {
-            username: formData.username,
-            studentId: formData.studentId,
-            DOB: formData.DOB,
-          },
-          {
-            headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-          }
-        );
+        await api.post("/students/", formData);
       }
-      fetchStudents();
       resetForm();
+      window.location.reload();
     } catch (error) {
       console.error("Error saving student:", error);
-      setError("Failed to save student. Please check the details and try again.");
     }
   };
 
-  // 학생 삭제
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this student?")) {
-      try {
-        await api.delete(`/students/${id}/`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
-        });
-        fetchStudents();
-      } catch (error) {
-        console.error("Error deleting student:", error);
-        setError("Failed to delete student. Please try again later.");
-      }
-    }
+  const handleEdit = (student) => {
+    setFormData({
+      id: student.id,
+      student_id: student.student_id,
+      first_name: student.user?.first_name || "",
+      last_name: student.user?.last_name || "",
+      email: student.user?.email || "",
+    });
+    setIsEditing(true);
   };
 
-  // 파일 업로드 처리
   const handleFileUpload = async (e) => {
-    e.preventDefault();
-    if (!file) {
-      alert("Please select a file to upload.");
-      return;
-    }
+    const file = e.target.files[0];
+    if (!file) return;
+
     const formData = new FormData();
-    formData.append("student_file", file);
+    formData.append("file", file);
+
     try {
-      await api.post("/students/upload/", formData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          "Content-Type": "multipart/form-data",
-        },
+      const response = await api.post("/students/upload/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      alert("File uploaded successfully.");
-      fetchStudents();
-      setFile(null);
+      setUploadSuccess(response.data.message || "Students uploaded successfully.");
+      setUploadError(null);
+      window.location.reload(); // Reload to fetch updated students list
     } catch (error) {
-      console.error("Error uploading file:", error);
-      setError("Failed to upload file. Please ensure it's a valid Excel file.");
+      console.error("Error uploading students:", error);
+      setUploadSuccess(null);
+      setUploadError("Failed to upload students. Please check the file format.");
     }
+  };
+
+  const tableHeaders = ["Student ID", "First Name", "Last Name", "Email", "Actions"];
+  const tableData = students?.map((student) => ({
+    id: student.id,
+    "Student ID": student.student_id,
+    "First Name": student.user?.first_name || "N/A",
+    "Last Name": student.user?.last_name || "N/A",
+    Email: student.user?.email || "N/A",
+    Actions: (
+      <>
+        <button
+          className="btn btn-secondary btn-sm me-2"
+          onClick={() => handleEdit(student)}
+        >
+          Edit
+        </button>
+        <button
+          className="btn btn-danger btn-sm"
+          onClick={() => confirmDelete(student.id)}
+        >
+          Delete
+        </button>
+      </>
+    ),
+  }));
+
+  const formFields = {
+    student_id: {
+      label: "Student ID",
+      id: "student_id",
+      type: "text",
+      value: formData.student_id,
+      onChange: (e) => setFormData({ ...formData, student_id: e.target.value }),
+      required: true,
+    },
+    first_name: {
+      label: "First Name",
+      id: "first_name",
+      type: "text",
+      value: formData.first_name,
+      onChange: (e) => setFormData({ ...formData, first_name: e.target.value }),
+      required: true,
+    },
+    last_name: {
+      label: "Last Name",
+      id: "last_name",
+      type: "text",
+      value: formData.last_name,
+      onChange: (e) => setFormData({ ...formData, last_name: e.target.value }),
+      required: true,
+    },
+    email: {
+      label: "Email",
+      id: "email",
+      type: "email",
+      value: formData.email,
+      onChange: (e) => setFormData({ ...formData, email: e.target.value }),
+      required: true,
+    },
   };
 
   return (
     <div className="container mt-4">
       <h1>Student Management</h1>
-      {error && <div className="alert alert-danger">{error}</div>}
-
-      <div className="row">
-        {/* Form Section */}
-        <div className="col-md-6">
-          <h2>{isEditing ? "Edit Student" : "Add New Student"}</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="username" className="form-label">
-                Username
-              </label>
-              <input
-                type="text"
-                id="username"
-                className="form-control"
-                value={formData.username}
-                onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                required
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p className="text-danger">Error loading data. Check console logs.</p>
+      ) : (
+        <>
+          <div className="row">
+            <div className="col-md-6">
+              <h2>{isEditing ? "Edit Student" : "Add New Student"}</h2>
+              <Form
+                fields={formFields}
+                onSubmit={handleSubmit}
+                onCancel={resetForm}
+                submitText={isEditing ? "Update" : "Save"}
+                cancelText="Cancel"
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="studentId" className="form-label">
-                Student ID
-              </label>
-              <input
-                type="text"
-                id="studentId"
-                className="form-control"
-                value={formData.studentId}
-                onChange={(e) => setFormData({ ...formData, studentId: e.target.value })}
-                required
-              />
+            <div className="col-md-6">
+              <h2>Student List</h2>
+              <Table headers={tableHeaders} data={tableData} />
+              <h4>Upload Students</h4>
+              <input type="file" onChange={handleFileUpload} />
+              {uploadError && <p className="text-danger">{uploadError}</p>}
+              {uploadSuccess && <p className="text-success">{uploadSuccess}</p>}
             </div>
-            <div className="mb-3">
-              <label htmlFor="DOB" className="form-label">
-                Date of Birth
-              </label>
-              <input
-                type="date"
-                id="DOB"
-                className="form-control"
-                value={formData.DOB}
-                onChange={(e) => setFormData({ ...formData, DOB: e.target.value })}
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              {isEditing ? "Update" : "Save"}
-            </button>
-            <button type="button" className="btn btn-secondary ms-2" onClick={resetForm}>
-              Cancel
-            </button>
-          </form>
-        </div>
-
-        {/* List Section */}
-        <div className="col-md-6">
-          <h2>Student List</h2>
-          <table className="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>Username</th>
-                <th>Student ID</th>
-                <th>Date of Birth</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student) => (
-                <tr key={student.id}>
-                  <td>{student.username}</td>
-                  <td>{student.studentId}</td>
-                  <td>{student.DOB}</td>
-                  <td>
-                    <button
-                      className="btn btn-secondary btn-sm me-2"
-                      onClick={() =>
-                        setFormData({
-                          id: student.id,
-                          username: student.username,
-                          studentId: student.studentId,
-                          DOB: student.DOB,
-                        })
-                      }
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(student.id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {!students.length && (
-                <tr>
-                  <td colSpan="4" className="text-center">
-                    No students available.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-
-        {/* File Upload Section */}
-        <div className="col-md-12 mt-4">
-          <h2>Upload Students via Excel</h2>
-          <form onSubmit={handleFileUpload}>
-            <div className="mb-3">
-              <label htmlFor="studentFile" className="form-label">
-                Select Excel File
-              </label>
-              <input
-                type="file"
-                id="studentFile"
-                className="form-control"
-                accept=".xlsx, .xls"
-                onChange={(e) => setFile(e.target.files[0])}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Upload
-            </button>
-          </form>
-        </div>
-      </div>
+          </div>
+        </>
+      )}
+      {confirmDialog && (
+        <ConfirmDialog
+          message="Are you sure you want to delete this student?"
+          onConfirm={handleDelete}
+          onCancel={() => setConfirmDialog(false)}
+        />
+      )}
     </div>
   );
 }

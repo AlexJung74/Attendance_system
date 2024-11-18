@@ -4,10 +4,12 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useAuthDispatch } from './AuthContext';
+import './Login.css'; // CSS 파일 추가
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // 로딩 상태 추가
   const dispatch = useAuthDispatch();
   const navigate = useNavigate();
 
@@ -16,6 +18,7 @@ function Login() {
     console.log('Attempting login with:', { username, password });
     console.log('Backend URL:', process.env.VITE_BACKEND_URL);
 
+    setIsSubmitting(true); // 로그인 시작 시 버튼 비활성화
     try {
       const response = await axios.post(
         `${process.env.VITE_BACKEND_URL}/api/auth/login/`,
@@ -23,14 +26,17 @@ function Login() {
       );
       console.log('Login successful, response data:', response.data);
 
-      // accessToken과 refreshToken을 정확한 키로 localStorage에 저장
       localStorage.setItem('accessToken', response.data.access);
       localStorage.setItem('refreshToken', response.data.refresh);
 
-      console.log("Stored accessToken:", localStorage.getItem('accessToken'));
-      console.log("Stored refreshToken:", localStorage.getItem('refreshToken'));
-
-      dispatch({ type: 'LOGIN', role: response.data.is_superuser ? 'admin' : response.data.is_lecturer ? 'lecturer' : 'student' });
+      dispatch({
+        type: 'LOGIN',
+        role: response.data.is_superuser
+          ? 'admin'
+          : response.data.is_lecturer
+          ? 'lecturer'
+          : 'student',
+      });
 
       if (response.data.is_superuser) {
         navigate('/admin/dashboard', { replace: true });
@@ -41,31 +47,42 @@ function Login() {
       }
     } catch (error) {
       console.error('Login failed:', error);
-      if (error.response) {
-        console.error('Error response data:', error.response.data);
-      }
+    } finally {
+      setIsSubmitting(false); // 요청 완료 후 버튼 활성화
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
-        name="username"
-        id="username"
-      />
-      <input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        name="password"
-        id="password"
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div className="login-container">
+      <h1>Welcome to Maungawhau College Attendance Systems</h1>
+      <img src="/logo1.png" alt="College Logo" className="college-logo" />
+      <h2>Login</h2>
+      <form onSubmit={handleLogin}>
+        <label htmlFor="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button
+          type="submit"
+          className="login-button"
+          disabled={isSubmitting} // 버튼 활성화 상태 관리
+        >
+          {isSubmitting ? 'Logging in...' : 'Login'}
+        </button>
+      </form>
+    </div>
   );
 }
 

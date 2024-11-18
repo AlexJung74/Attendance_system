@@ -1,4 +1,4 @@
-// src/components/Courses/Navbar.jsx
+// src/components/Lecturer/CourseList.jsx
 
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';

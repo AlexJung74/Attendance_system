@@ -1,23 +1,23 @@
 // src/components/Navigation/Navbar.jsx
 
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useAuthDispatch, useAuthState } from './AuthContext';
+import api from "../api";
 
-function Navbar({ isAuthenticated, userRole }) {
+function Navbar() {
   const navigate = useNavigate();
+  const dispatch = useAuthDispatch();
+  const { isAuthenticated, userRole } = useAuthState();
 
   const handleLogout = async () => {
     try {
-      await axios.post('/api/auth/logout/', null, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-      });
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-      navigate('/', { replace: true });
+      await api.post('/auth/logout/');
     } catch (error) {
       console.error('Logout failed:', error);
+    } finally {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
+      dispatch({ type: 'LOGOUT' });
       navigate('/', { replace: true });
     }
   };
@@ -41,36 +41,43 @@ function Navbar({ isAuthenticated, userRole }) {
           {isAuthenticated && (
             <>
               <li className="nav-item">
-                <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                <Link className="nav-link" to="/admin/dashboard">
+                  Dashboard
+                </Link>
               </li>
               {userRole === 'admin' && (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/admin/courses">Courses</Link>
+                    <Link className="nav-link" to="/admin/courses">
+                      Courses
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/admin/classes">Classes</Link>
+                    <Link className="nav-link" to="/admin/classes">
+                      Classes
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/admin/lecturers">Lecturers</Link>
+                    <Link className="nav-link" to="/admin/lecturers">
+                      Lecturers
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/admin/students">Students</Link>
+                    <Link className="nav-link" to="/admin/students">
+                      Students
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/admin/semesters">Semesters</Link>
+                    <Link className="nav-link" to="/admin/semesters">
+                      Semesters
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/admin/check-attendance">
+                      Check Attendance
+                    </Link>
                   </li>
                 </>
-              )}
-              {userRole === 'lecturer' && (
-                <li className="nav-item">
-                  <Link className="nav-link" to="/lecturer/dashboard">Dashboard</Link>
-                </li>
-              )}
-              {userRole === 'student' && (
-                <li className="nav-item">
-                  <Link className="nav-link" to="/student/dashboard">My Attendance</Link>
-                </li>
               )}
             </>
           )}
@@ -84,7 +91,9 @@ function Navbar({ isAuthenticated, userRole }) {
             </li>
           ) : (
             <li className="nav-item">
-              <Link className="nav-link" to="/login">Login</Link>
+              <button className="btn btn-link nav-link" disabled>
+                Login
+              </button>
             </li>
           )}
         </ul>

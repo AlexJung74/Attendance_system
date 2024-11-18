@@ -1,38 +1,88 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../api";
+// src/components/Dashboards/AdminDashboard.jsx
+
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import api from '../api';
 
 function AdminDashboard() {
-  const [lecturers, setLecturers] = useState([]);
+  const navigate = useNavigate();
+  const [semesters, setSemesters] = useState([]);
   const [courses, setCourses] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [semesters, setSemesters] = useState([]);
-  const navigate = useNavigate();
+  const [selectedSemester, setSelectedSemester] = useState('');
+  const [selectedCourse, setSelectedCourse] = useState('');
+  const [selectedClass, setSelectedClass] = useState('');
 
-  const fetchDashboardData = async () => {
-    try {
-      const accessToken = localStorage.getItem("accessToken");
-      const response = await api.get("/admin/dashboard/", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      setLecturers(response.data.lecturers || []);
-      setCourses(response.data.courses || []);
-      setClasses(response.data.classes || []);
-      setSemesters(response.data.semesters || []);
-    } catch (error) {
-      console.error("Error fetching dashboard data:", error);
-      if (error.response && error.response.status === 401) {
-        navigate("/login");
+  // 데이터 로드
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const semestersResponse = await api.get('/semesters/');
+        setSemesters(semestersResponse.data);
+      } catch (error) {
+        console.error('Error fetching semesters:', error);
       }
+    };
+
+    fetchData();
+  }, []);
+
+  // 학기가 변경되었을 때 강좌 가져오기
+  useEffect(() => {
+    const fetchCourses = async () => {
+      if (selectedSemester) {
+        try {
+          const response = await api.get(`/courses/?semester=${selectedSemester}`);
+          setCourses(response.data);
+        } catch (error) {
+          console.error('Error fetching courses:', error);
+        }
+      } else {
+        setCourses([]);
+        setClasses([]);
+      }
+    };
+
+    fetchCourses();
+  }, [selectedSemester]);
+
+  // 강좌가 변경되었을 때 수업 가져오기
+  useEffect(() => {
+    const fetchClasses = async () => {
+      if (selectedSemester && selectedCourse) {
+        try {
+          const response = await api.get(
+            `/classes/?semester=${selectedSemester}&course=${selectedCourse}`
+          );
+          setClasses(response.data);
+        } catch (error) {
+          console.error('Error fetching classes:', error);
+        }
+      } else {
+        setClasses([]);
+      }
+    };
+
+    fetchClasses();
+  }, [selectedSemester, selectedCourse]);
+
+  // 체크 버튼 핸들러
+  const handleCheckAttendance = () => {
+    if (selectedSemester && selectedCourse && selectedClass) {
+      navigate(`/attendance-check/${selectedClass}`);
+    } else {
+      alert('Please select all fields.');
     }
   };
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
+  // 리셋 버튼 핸들러
+  const handleReset = () => {
+    setSelectedSemester('');
+    setSelectedCourse('');
+    setSelectedClass('');
+    setCourses([]);
+    setClasses([]);
+  };
 
   return (
     <div className="container mt-4">
@@ -41,104 +91,101 @@ function AdminDashboard() {
       <div className="admin-buttons mb-4">
         <button
           className="btn btn-primary btn-lg"
-          onClick={() => navigate("/admin/semesters")}
+          onClick={() => navigate('/admin/semesters')}
         >
           Manage Semesters
         </button>
         <button
           className="btn btn-success btn-lg"
-          onClick={() => navigate("/admin/courses")}
+          onClick={() => navigate('/admin/courses')}
         >
           Manage Courses
         </button>
         <button
           className="btn btn-info btn-lg"
-          onClick={() => navigate("/admin/classes")}
+          onClick={() => navigate('/admin/classes')}
         >
           Manage Classes
         </button>
         <button
           className="btn btn-warning btn-lg"
-          onClick={() => navigate("/admin/lecturers")}
+          onClick={() => navigate('/admin/lecturers')}
         >
           Manage Lecturers
         </button>
         <button
           className="btn btn-danger btn-lg"
-          onClick={() => navigate("/admin/students")}
+          onClick={() => navigate('/admin/students')}
         >
           Manage Students
         </button>
-        <button
-          className="btn btn-secondary btn-lg"
-          onClick={() => navigate("/admin/upload-students")}
-        >
-          Upload Student Info
-        </button>
       </div>
-      <div className="row">
-        {/* Courses Section */}
-        <div className="col-md-6">
-          <h3>Courses</h3>
-          <ul className="list-group">
-            {courses.length > 0 ? (
-              courses.map((course) => (
-                <li key={course.id} className="list-group-item">
-                  {course.name || "N/A"} ({course.code || "N/A"})
-                </li>
-              ))
-            ) : (
-              <li className="list-group-item">No courses available.</li>
-            )}
-          </ul>
-        </div>
 
-        {/* Lecturers Section */}
-        <div className="col-md-6">
-          <h3>Lecturers</h3>
-          <ul className="list-group">
-            {lecturers.length > 0 ? (
-              lecturers.map((lecturer) => (
-                <li key={lecturer.id} className="list-group-item">
-                  {lecturer.user?.first_name || "N/A"} {lecturer.user?.last_name || "N/A"}
-                </li>
-              ))
-            ) : (
-              <li className="list-group-item">No lecturers available.</li>
-            )}
-          </ul>
-        </div>
-
-        {/* Classes Section */}
-        <div className="col-md-6">
-          <h3>Classes</h3>
-          <ul className="list-group">
-            {classes.length > 0 ? (
-              classes.map((classItem) => (
-                <li key={classItem.id} className="list-group-item">
-                  {classItem.number || "N/A"} - {classItem.course?.name || "N/A"}
-                </li>
-              ))
-            ) : (
-              <li className="list-group-item">No classes available.</li>
-            )}
-          </ul>
-        </div>
-
-        {/* Semesters Section */}
-        <div className="col-md-6">
-          <h3>Semesters</h3>
-          <ul className="list-group">
-            {semesters.length > 0 ? (
-              semesters.map((semester) => (
-                <li key={semester.id} className="list-group-item">
-                  {semester.year || "N/A"} - {semester.semester || "N/A"}
-                </li>
-              ))
-            ) : (
-              <li className="list-group-item">No semesters available.</li>
-            )}
-          </ul>
+      {/* Check Attendance Section */}
+      <div className="card mt-4">
+        <div className="card-header">Check Attendance</div>
+        <div className="card-body">
+          <div className="form-group mb-3">
+            <label htmlFor="semester">Select Semester:</label>
+            <select
+              id="semester"
+              className="form-control"
+              value={selectedSemester}
+              onChange={(e) => setSelectedSemester(e.target.value)}
+            >
+              <option value="">-- Select Semester --</option>
+              {semesters.map((semester) => (
+                <option key={semester.id} value={semester.id}>
+                  {semester.year} {semester.semester}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="course">Select Course:</label>
+            <select
+              id="course"
+              className="form-control"
+              value={selectedCourse}
+              onChange={(e) => setSelectedCourse(e.target.value)}
+              disabled={!selectedSemester}
+            >
+              <option value="">-- Select Course --</option>
+              {courses.map((course) => (
+                <option key={course.id} value={course.id}>
+                  {course.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group mb-3">
+            <label htmlFor="class">Select Class:</label>
+            <select
+              id="class"
+              className="form-control"
+              value={selectedClass}
+              onChange={(e) => setSelectedClass(e.target.value)}
+              disabled={!selectedCourse}
+            >
+              <option value="">-- Select Class --</option>
+              {classes.map((classItem) => (
+                <option key={classItem.id} value={classItem.id}>
+                  Class {classItem.number}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-actions">
+            <button
+              className="btn btn-primary me-2"
+              onClick={handleCheckAttendance}
+            >
+              Check Attendance
+            </button>
+            <button className="btn btn-secondary" onClick={handleReset}>
+              Reset
+            </button>
+          </div>
         </div>
       </div>
     </div>
