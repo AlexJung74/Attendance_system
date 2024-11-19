@@ -21,7 +21,7 @@ function AdminDashboard() {
     const fetchData = async () => {
       try {
         const semestersResponse = await api.get('/semesters/');
-        // 페이지네이션이 적용된 경우
+        console.log('Semesters API response:', semestersResponse.data);
         const semestersData = semestersResponse.data.results || semestersResponse.data;
         setSemesters(semestersData);
       } catch (error) {
