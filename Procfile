@@ -1,1 +1,1 @@
-web: gunicorn attendance_system.wsgi --log-file -
+web: gunicorn attendance_system.wsgi --log-file - --timeout 60
