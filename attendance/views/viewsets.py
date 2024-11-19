@@ -34,7 +34,7 @@ class StudentViewSet(viewsets.ModelViewSet):
 
 # Class 모델 ViewSet (요청 유형에 따라 직렬화 클래스 선택)
 class ClassViewSet(viewsets.ModelViewSet):
-    queryset = Class.objects.all()
+    queryset = Class.objects.filter(course__isnull=False)
     permission_classes = [IsAdminUser]
 
     def get_serializer_class(self):
