@@ -54,6 +54,7 @@ class ClassReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Class
         fields = ['id', 'number', 'course', 'semester', 'lecturer']
+        depth = 1
 
 
 # Class 모델 쓰기 전용 직렬화 (쓰기 전용)
