@@ -63,7 +63,17 @@ class Class(models.Model):
         unique_together = ('course', 'semester', 'number')
 
     def __str__(self):
-        return f"({self.semester}) - {self.course.code} {self.course.name} - Class {self.number} "
+        try:
+            semester_str = str(self.semester)
+        except Semester.DoesNotExist:
+            semester_str = 'Unknown Semester'
+        try:
+            course_code = self.course.code
+            course_name = self.course.name
+        except Course.DoesNotExist:
+            course_code = 'Unknown Code'
+            course_name = 'Unknown Course'
+        return f"({semester_str}) - {course_code} {course_name} - Class {self.number}"
 
     @property
     def total_classes(self):
