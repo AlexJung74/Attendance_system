@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import api from '../api.jsx';
-import Table from '../shared/Table.jsx';
+import Table from '../Shared/Table.jsx';
 
 function CheckAttendance() {
   const [attendanceData, setAttendanceData] = useState([]);

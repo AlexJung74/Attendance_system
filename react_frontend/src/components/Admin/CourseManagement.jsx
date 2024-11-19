@@ -1,8 +1,8 @@
 import { useState } from "react";
-import useFetch from "../shared/useFetch.jsx";
-import Table from "../shared/Table.jsx";
-import Form from "../shared/Form.jsx";
-import ConfirmDialog from "../shared/ConfirmDialog.jsx";
+import useFetch from "../Shared/useFetch.jsx";
+import Table from "../Shared/Table.jsx";
+import Form from "../Shared/Form.jsx";
+import ConfirmDialog from "../Shared/ConfirmDialog.jsx";
 import api from "../api.jsx";
 
 function CourseManagement() {

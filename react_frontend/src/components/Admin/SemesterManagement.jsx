@@ -1,8 +1,8 @@
 // src/components/Admin/SemesterManagement.jsx
 
 import { useState } from "react";
-import useFetch from "../shared/useFetch.jsx";
-import ConfirmDialog from "../shared/ConfirmDialog.jsx";
+import useFetch from "../Shared/useFetch.jsx";
+import ConfirmDialog from "../Shared/ConfirmDialog.jsx";
 import api from "../api.jsx";
 
 function SemesterManagement() {
