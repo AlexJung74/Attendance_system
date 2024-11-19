@@ -20,9 +20,6 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       open: true,
     },
-    define: {
-      'process.env': { ...env },
-    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src'),

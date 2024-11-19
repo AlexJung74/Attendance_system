@@ -16,12 +16,12 @@ function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
     console.log('Attempting login with:', { username, password });
-    console.log('Backend URL:', process.env.VITE_BACKEND_URL);
+    console.log('Backend URL:', import.meta.env.VITE_BACKEND_URL);
 
     setIsSubmitting(true); // 로그인 시작 시 버튼 비활성화
     try {
       const response = await axios.post(
-        `${process.env.VITE_BACKEND_URL}/api/auth/login/`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/login/`,
         { username, password }
       );
       console.log('Login successful, response data:', response.data);

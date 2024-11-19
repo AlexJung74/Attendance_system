@@ -19,7 +19,7 @@ export default [
         sourceType: 'module',
       },
     },
-    settings: { react: { version: '18.3' } },
+    settings: { react: { version: '18.2' } },
     plugins: {
       react,
       'react-hooks': reactHooks,
