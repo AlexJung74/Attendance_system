@@ -12,15 +12,23 @@ function AdminDashboard() {
   const [selectedSemester, setSelectedSemester] = useState('');
   const [selectedCourse, setSelectedCourse] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
+  const [loadingSemesters, setLoadingSemesters] = useState(true);
+  const [loadingCourses, setLoadingCourses] = useState(false);
+  const [loadingClasses, setLoadingClasses] = useState(false);
 
   // 데이터 로드
   useEffect(() => {
     const fetchData = async () => {
       try {
         const semestersResponse = await api.get('/semesters/');
-        setSemesters(semestersResponse.data);
+        // 페이지네이션이 적용된 경우
+        const semestersData = semestersResponse.data.results || semestersResponse.data;
+        setSemesters(semestersData);
       } catch (error) {
         console.error('Error fetching semesters:', error);
+        setSemesters([]);
+      } finally {
+        setLoadingSemesters(false);
       }
     };
 
@@ -31,11 +39,16 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchCourses = async () => {
       if (selectedSemester) {
+        setLoadingCourses(true);
         try {
           const response = await api.get(`/courses/?semester=${selectedSemester}`);
-          setCourses(response.data);
+          const coursesData = response.data.results || response.data;
+          setCourses(coursesData);
         } catch (error) {
           console.error('Error fetching courses:', error);
+          setCourses([]);
+        } finally {
+          setLoadingCourses(false);
         }
       } else {
         setCourses([]);
@@ -50,13 +63,18 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchClasses = async () => {
       if (selectedSemester && selectedCourse) {
+        setLoadingClasses(true);
         try {
           const response = await api.get(
             `/classes/?semester=${selectedSemester}&course=${selectedCourse}`
           );
-          setClasses(response.data);
+          const classesData = response.data.results || response.data;
+          setClasses(classesData);
         } catch (error) {
           console.error('Error fetching classes:', error);
+          setClasses([]);
+        } finally {
+          setLoadingClasses(false);
         }
       } else {
         setClasses([]);
@@ -127,53 +145,65 @@ function AdminDashboard() {
         <div className="card-body">
           <div className="form-group mb-3">
             <label htmlFor="semester">Select Semester:</label>
-            <select
-              id="semester"
-              className="form-control"
-              value={selectedSemester}
-              onChange={(e) => setSelectedSemester(e.target.value)}
-            >
-              <option value="">-- Select Semester --</option>
-              {semesters.map((semester) => (
-                <option key={semester.id} value={semester.id}>
-                  {semester.year} {semester.semester}
-                </option>
-              ))}
-            </select>
+            {loadingSemesters ? (
+              <p>Loading semesters...</p>
+            ) : (
+              <select
+                id="semester"
+                className="form-control"
+                value={selectedSemester}
+                onChange={(e) => setSelectedSemester(e.target.value)}
+              >
+                <option value="">-- Select Semester --</option>
+                {semesters.map((semester) => (
+                  <option key={semester.id} value={semester.id}>
+                    {semester.year} {semester.semester}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
           <div className="form-group mb-3">
             <label htmlFor="course">Select Course:</label>
-            <select
-              id="course"
-              className="form-control"
-              value={selectedCourse}
-              onChange={(e) => setSelectedCourse(e.target.value)}
-              disabled={!selectedSemester}
-            >
-              <option value="">-- Select Course --</option>
-              {courses.map((course) => (
-                <option key={course.id} value={course.id}>
-                  {course.name}
-                </option>
-              ))}
-            </select>
+            {loadingCourses ? (
+              <p>Loading courses...</p>
+            ) : (
+              <select
+                id="course"
+                className="form-control"
+                value={selectedCourse}
+                onChange={(e) => setSelectedCourse(e.target.value)}
+                disabled={!selectedSemester}
+              >
+                <option value="">-- Select Course --</option>
+                {courses.map((course) => (
+                  <option key={course.id} value={course.id}>
+                    {course.name}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
           <div className="form-group mb-3">
             <label htmlFor="class">Select Class:</label>
-            <select
-              id="class"
-              className="form-control"
-              value={selectedClass}
-              onChange={(e) => setSelectedClass(e.target.value)}
-              disabled={!selectedCourse}
-            >
-              <option value="">-- Select Class --</option>
-              {classes.map((classItem) => (
-                <option key={classItem.id} value={classItem.id}>
-                  Class {classItem.number}
-                </option>
-              ))}
-            </select>
+            {loadingClasses ? (
+              <p>Loading classes...</p>
+            ) : (
+              <select
+                id="class"
+                className="form-control"
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(e.target.value)}
+                disabled={!selectedCourse}
+              >
+                <option value="">-- Select Class --</option>
+                {classes.map((classItem) => (
+                  <option key={classItem.id} value={classItem.id}>
+                    Class {classItem.number}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
           <div className="form-actions">
             <button
