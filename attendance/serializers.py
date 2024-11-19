@@ -3,7 +3,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Course, Semester, Lecturer, Student, Class, CollegeDay, Attendance
-
+import logging
+logger = logging.getLogger(__name__)
 
 # User 모델 직렬화
 class UserSerializer(serializers.ModelSerializer):
@@ -54,6 +55,13 @@ class ClassReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Class
         fields = ['id', 'number', 'course', 'semester', 'lecturer']
+
+    def to_representation(self, instance):
+        try:
+            return super().to_representation(instance)
+        except Exception as e:
+            logger.error(f"Class ID {instance.id} Error occurred during serialization: {e}")
+            raise e
 
 
 # Class 모델 쓰기 전용 직렬화 (쓰기 전용)

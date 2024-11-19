@@ -179,10 +179,10 @@ LOGGING = {
         'level': 'DEBUG',  # INFO로 변경 가능
     },
     'loggers': {
-        'django': {
+        'attendance-backend': {
             'handlers': ['console'],
             'level': 'DEBUG',  # INFO로 변경 가능
-            'propagate': False,
+            'propagate': True,
         },
     },
 }

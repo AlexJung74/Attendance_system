@@ -49,7 +49,7 @@ class ClassViewSet(viewsets.ModelViewSet):
         'semester',
         'lecturer',
         'lecturer__user'
-    ).all()[:20]
+    ).all()
     serializer_class = ClassReadSerializer
     permission_classes = [IsAdminUser]
     pagination_class = ClassPagination
