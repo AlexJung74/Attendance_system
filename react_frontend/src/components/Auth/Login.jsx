@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useAuthDispatch } from './AuthContext';
+import { useAuthDispatch } from './AuthContext.jsx';
 import './Login.css'; // CSS 파일 추가
 
 function Login() {

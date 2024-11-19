@@ -1,10 +1,10 @@
 // src/components/Admin/LecturerManagement.jsx
 
 import { useState } from "react";
-import useFetch from "../shared/useFetch";
-import Table from "../shared/Table";
-import Form from "../shared/Form";
-import ConfirmDialog from "../shared/ConfirmDialog";
+import useFetch from "../shared/useFetch.jsx";
+import Table from "../shared/Table.jsx";
+import Form from "../shared/Form.jsx";
+import ConfirmDialog from "../shared/ConfirmDialog.jsx";
 import api from "../api.jsx";
 
 function LecturerManagement() {

@@ -5,9 +5,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Bootstrap JS
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import App from './App.jsx';
 import axios from 'axios';
-import { AuthProvider } from './components/Auth/AuthContext';
+import { AuthProvider } from './components/Auth/AuthContext.jsx';
 
 // Axios 기본 URL 설정 (환경에 따라 분리)
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;

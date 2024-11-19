@@ -1,7 +1,7 @@
 // src/components/Navigation/Navbar.jsx
 
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuthDispatch, useAuthState } from './AuthContext';
+import { useAuthDispatch, useAuthState } from './AuthContext.jsx';
 import api from "../api";
 
 function Navbar() {

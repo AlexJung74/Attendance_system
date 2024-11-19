@@ -1,7 +1,7 @@
 // src/components/Dashboards/LecturerDashboard.jsx
 
 import { useEffect, useState } from 'react';
-import api from '../api';
+import api from '../api.jsx';
 
 function LecturerDashboard() {
   const [classes, setClasses] = useState([]);

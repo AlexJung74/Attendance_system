@@ -1,8 +1,8 @@
 // src/components/Admin/ClassManagement.jsx
 
 import { useState } from "react";
-import useFetch from "../shared/useFetch";
-import ConfirmDialog from "../shared/ConfirmDialog";
+import useFetch from "../shared/useFetch.jsx";
+import ConfirmDialog from "../shared/ConfirmDialog.jsx";
 import api from "../api.jsx";
 
 function ClassManagement() {

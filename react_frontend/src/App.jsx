@@ -1,22 +1,22 @@
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { AuthProvider, useAuthState, useAuthDispatch } from './components/Auth/AuthContext';
-import api from './components/api';
+import { AuthProvider, useAuthState, useAuthDispatch } from './components/Auth/AuthContext.jsx';
+import api from './components/api.jsx';
 
-import Navbar from './components/Auth/Navbar'; // Navbar 추가
-import LecturerDashboard from './components/Dashboards/LecturerDashboard';
-import StudentDashboard from './components/Dashboards/StudentDashboard';
-import Login from './components/Auth/Login';
+import Navbar from './components/Auth/Navbar.jsx'; // Navbar 추가
+import LecturerDashboard from './components/Dashboards/LecturerDashboard.jsx';
+import StudentDashboard from './components/Dashboards/StudentDashboard.jsx';
+import Login from './components/Auth/Login.jsx';
 
 // Admin 관련 컴포넌트
-import AdminDashboard from './components/Dashboards/AdminDashboard';
-import CourseManagement from './components/Admin/CourseManagement';
-import SemesterManagement from './components/Admin/SemesterManagement';
-import ClassManagement from './components/Admin/ClassManagement';
-import LecturerManagement from './components/Admin/LecturerManagement';
-import StudentManagement from './components/Admin/StudentManagement';
-import CheckAttendance from './components/Admin/CheckAttendance';
+import AdminDashboard from './components/Dashboards/AdminDashboard.jsx';
+import CourseManagement from './components/Admin/CourseManagement.jsx';
+import SemesterManagement from './components/Admin/SemesterManagement.jsx';
+import ClassManagement from './components/Admin/ClassManagement.jsx';
+import LecturerManagement from './components/Admin/LecturerManagement.jsx';
+import StudentManagement from './components/Admin/StudentManagement.jsx';
+import CheckAttendance from './components/Admin/CheckAttendance.jsx';
 
 function AppContent() {
   const { isAuthenticated, userRole } = useAuthState();

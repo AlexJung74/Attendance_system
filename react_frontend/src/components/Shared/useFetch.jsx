@@ -1,7 +1,7 @@
 // src/components/shared/useFetch.jsx
 
 import { useState, useEffect } from 'react';
-import api from '../api'; // api.js에서 export한 api 객체를 가져옴
+import api from '../api.jsx'; // api.js에서 export한 api 객체를 가져옴
 
 const useFetch = (url) => {
   const [data, setData] = useState(null);

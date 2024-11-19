@@ -1,7 +1,7 @@
 // src/components/Dashboards/StudentDashboard.jsx
 
 import { useEffect, useState } from 'react';
-import api from '../api';
+import api from '../api.jsx';
 
 function StudentDashboard() {
   const [attendanceRecords, setAttendanceRecords] = useState([]);
