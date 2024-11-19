@@ -4,8 +4,11 @@ runtime.txt
 db.sqlite3
 debug.log
 JetBrains.gitignore
+db.json
+Procfile
 .elasticbeanstalk
 .venv
+.idea
 .gitignore
 attendance
 attendance_system
