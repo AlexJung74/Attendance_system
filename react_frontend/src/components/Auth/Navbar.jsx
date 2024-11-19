@@ -72,11 +72,6 @@ function Navbar() {
                       Semesters
                     </Link>
                   </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/admin/check-attendance">
-                      Check Attendance
-                    </Link>
-                  </li>
                 </>
               )}
             </>

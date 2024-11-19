@@ -8,6 +8,10 @@ from attendance.serializers import (
     StudentSerializer, ClassReadSerializer, ClassWriteSerializer, CollegeDaySerializer, AttendanceSerializer
 )
 from rest_framework.permissions import IsAdminUser
+from rest_framework.pagination import PageNumberPagination
+
+class ClassPagination(PageNumberPagination):
+    page_size = 20
 
 
 # Course 모델 ViewSet
@@ -40,8 +44,15 @@ class StudentViewSet(viewsets.ModelViewSet):
 
 # Class 모델 ViewSet (요청 유형에 따라 직렬화 클래스 선택)
 class ClassViewSet(viewsets.ModelViewSet):
-    queryset = Class.objects.select_related('course', 'semester', 'lecturer').prefetch_related('students').all()
+    queryset = Class.objects.select_related(
+        'course',
+        'semester',
+        'lecturer',
+        'lecturer__user'
+    ).all()[:20]
+    serializer_class = ClassReadSerializer
     permission_classes = [IsAdminUser]
+    pagination_class = ClassPagination
 
     @method_decorator(cache_page(60 * 15))  # 15분 동안 캐시
     def list(self, request, *args, **kwargs):
