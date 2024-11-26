@@ -68,7 +68,9 @@ function AdminDashboard() {
           const response = await api.get(
             `/classes/?semester=${selectedSemester}&course=${selectedCourse}`
           );
+          console.log("Classes API Response:", response.data);
           const classesData = response.data.results || response.data;
+          console.log("Classes Data:", classesData);
           setClasses(classesData);
         } catch (error) {
           console.error('Error fetching classes:', error);
@@ -81,7 +83,13 @@ function AdminDashboard() {
       }
     };
 
-    fetchClasses();
+    if (selectedSemester && selectedCourse) {
+      console.log("Fetching classes for semester:", selectedSemester, "and course:", selectedCourse);
+      fetchClasses();
+    } else {
+      setClasses([]); // 필터링되지 않은 상태를 명확히 하기 위해 초기화
+      console.log("Semester or course not selected");
+    }
   }, [selectedSemester, selectedCourse]);
 
   // 체크 버튼 핸들러
