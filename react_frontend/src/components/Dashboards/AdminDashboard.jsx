@@ -61,6 +61,7 @@ function AdminDashboard() {
 
   // 강좌가 변경되었을 때 수업 가져오기
   useEffect(() => {
+    console.log("[useEffect] Triggered. selectedSemester:", selectedSemester, "selectedCourse:", selectedCourse);
     const fetchClasses = async () => {
       console.log("fetchClasses start");
       if (selectedSemester && selectedCourse) {
