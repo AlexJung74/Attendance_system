@@ -32,7 +32,10 @@ function AdminDashboard() {
       }
     };
 
-    fetchData();
+    // fetchData()가 반환하는 Promise 처리
+    fetchData().catch((error) => {
+      console.error('Unhandled error in fetchData:', error);
+    });
   }, []);
 
   // 학기가 변경되었을 때 강좌 가져오기
@@ -56,12 +59,16 @@ function AdminDashboard() {
       }
     };
 
-    fetchCourses();
+    // fetchCourses()가 반환하는 Promise 처리
+    fetchCourses().catch((error) => {
+      console.error('Unhandled error in fetchCourses:', error);
+    });
   }, [selectedSemester]);
 
   // 강좌가 변경되었을 때 수업 가져오기
   useEffect(() => {
     console.log("[useEffect] Triggered. selectedSemester:", selectedSemester, "selectedCourse:", selectedCourse);
+
     const fetchClasses = async () => {
       console.log("fetchClasses start");
       if (selectedSemester && selectedCourse) {
@@ -87,13 +94,10 @@ function AdminDashboard() {
       }
     };
 
-    if (selectedSemester && selectedCourse) {
-      console.log("Fetching classes for semester:", selectedSemester, "and course:", selectedCourse);
-      fetchClasses();
-    } else {
-      setClasses([]); // 필터링되지 않은 상태를 명확히 하기 위해 초기화
-      console.log("Semester or course not selected");
-    }
+    // fetchClasses()가 반환하는 Promise 처리
+    fetchClasses().catch((error) => {
+      console.error('Unhandled error in fetchClasses:', error);
+    });
   }, [selectedSemester, selectedCourse]);
 
   // 체크 버튼 핸들러

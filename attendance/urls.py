@@ -2,6 +2,7 @@
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from rest_framework.viewsets import options_request_handler
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views.admin_views import (
@@ -41,6 +42,8 @@ urlpatterns = [
     # 관리자 대시보드 (템플릿 및 API)
     path('api/admin/dashboard/', AttendanceCheckAPIView.as_view(), name='admin_attendance_api'),
     path('dashboard/', admin_dashboard, name='admin_dashboard'),
+    path('api/options/', options_request_handler, name='options-request'),
+
 
     # 출석 관리
     path('attendance/select/', select_attendance, name='select_attendance'),
