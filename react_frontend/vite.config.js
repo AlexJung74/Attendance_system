@@ -6,13 +6,12 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
 
   return {
-    base: '/', // Vercel 배포 시 기본 경로를 루트로 설정
-
+    base: '/', // 기본 경로를 루트로 설정 (Vercel에서 자동 처리)
     plugins: [react()],
     server: {
       proxy: {
         '/api': {
-          target: 'https://attendance-backend-40491d7871de.herokuapp.com',
+          target: env.VITE_BACKEND_URL || 'http://localhost:8000',
           changeOrigin: true,
           secure: false,
         },
@@ -22,17 +21,17 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, 'src'),
+        '@': path.resolve(__dirname, 'src'), // @를 src 디렉토리로 매핑
       },
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx'], // 확장자 자동 인식
     },
     build: {
-      outDir: 'dist',
-      sourcemap: true,
+      outDir: 'dist', // 빌드 출력 디렉토리
+      sourcemap: true, // 소스맵 활성화 (디버깅에 유용)
       rollupOptions: {
         output: {
           manualChunks: {
-            vendor: ['react', 'react-dom'],
+            vendor: ['react', 'react-dom'], // 번들 분리 (React 관련)
           },
         },
       },
