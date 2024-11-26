@@ -62,5 +62,7 @@ urlpatterns = [
 
     # REST API 엔드포인트
     path('api/', include(router.urls)),
+
+    # 전역 OPTIONS 요청 처리
     path('api/<path:path>', options_request_handler, name='options_handler'),
 ]
