@@ -60,6 +60,15 @@ CSRF_TRUSTED_ORIGINS = [
     'https://attendance-system-frontend-seven.vercel.app',
 ]
 
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS"
+]
+
 CORS_ALLOW_HEADERS = [
     'Authorization',
     'Content-Type',
