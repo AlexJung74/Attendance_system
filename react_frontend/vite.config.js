@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_BACKEND_URL,
+          target: 'https://attendance-backend-40491d7871de.herokuapp.com',
           changeOrigin: true,
           secure: false,
         },
