@@ -11,9 +11,13 @@ function CourseList() {
   // 코스 목록을 가져오는 함수 (useCallback으로 래핑)
   const fetchCourses = useCallback(async () => {
     try {
-      const response = await axios.get('/api/courses/', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-      });
+      const response = await axios.get(
+    "https://attendance-backend-40491d7871de.herokuapp.com/api/classes/",
+    { params: { semester: 2, course: 9 } }
+      );
+     // const response = await axios.get('/api/courses/', {
+     //   headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+   //   });
       setCourses(response.data); // 코스 데이터 설정
     } catch (error) {
       console.error("Error fetching courses:", error);
