@@ -21,6 +21,18 @@ from .views.api import (
     AttendanceViewSet,
 )
 from .views.auth_views import CustomAuthToken
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def options_request_handler(request):
+    response = JsonResponse({'message': 'Options request success'})
+    response['Access-Control-Allow-Origin'] = '*'
+    response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
+    response['Access-Control-Allow-Headers'] = 'Authorization, Content-Type'
+    return response
+
 
 # REST API를 위한 DefaultRouter 설정
 router = DefaultRouter()
@@ -42,12 +54,13 @@ urlpatterns = [
     path('api/admin/dashboard/', AttendanceCheckAPIView.as_view(), name='admin_attendance_api'),
     path('dashboard/', admin_dashboard, name='admin_dashboard'),
 
-
     # 출석 관리
     path('attendance/select/', select_attendance, name='select_attendance'),
     path('attendance/check/<int:class_instance_id>/', attendance_check, name='attendance_check'),
-    path('attendance/warning/<int:class_instance_id>/<int:student_id>/', send_attendance_warning, name='send_attendance_warning'),
+    path('attendance/warning/<int:class_instance_id>/<int:student_id>/', send_attendance_warning,
+         name='send_attendance_warning'),
 
     # REST API 엔드포인트
     path('api/', include(router.urls)),
+    path('api/<path:path>', options_request_handler, name='options_handler'),
 ]
