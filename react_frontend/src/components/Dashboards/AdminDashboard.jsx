@@ -20,7 +20,9 @@ function AdminDashboard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const semestersResponse = await api.get('/semesters/');
+        const semestersResponse = await api.get('/semesters/', {
+          withCredentials: true,
+        });
         console.log('Semesters API response:', semestersResponse.data);
         const semestersData = semestersResponse.data.results || semestersResponse.data;
         setSemesters(semestersData);
@@ -44,7 +46,9 @@ function AdminDashboard() {
       if (selectedSemester) {
         setLoadingCourses(true);
         try {
-          const response = await api.get(`/courses/?semester=${selectedSemester}`);
+          const response = await api.get(`/courses/?semester=${selectedSemester}`, {
+            withCredentials: true,
+        });
           const coursesData = response.data.results || response.data;
           setCourses(coursesData);
         } catch (error) {
@@ -77,8 +81,10 @@ function AdminDashboard() {
         try {
           console.log("[fetchClasses] try");
           const response = await api.get(
-            `/classes/?semester=${selectedSemester}&course=${selectedCourse}`
-          );
+            `/classes/?semester=${selectedSemester}&course=${selectedCourse}`, {
+            withCredentials: true,
+          });
+
           console.log("Classes API Response:", response.data);
           const classesData = response.data.results || response.data;
           console.log("Classes Data:", classesData);

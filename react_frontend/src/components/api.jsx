@@ -15,6 +15,8 @@ api.interceptors.request.use(
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
+    // CORS 문제 해결을 위해 withCredentials 설정 추가
+    config.withCredentials = true;
     return config;
   },
   (error) => Promise.reject(error)

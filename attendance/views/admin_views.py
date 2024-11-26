@@ -42,18 +42,6 @@ class AttendanceCheckAPIView(APIView):
         ]
         return Response(data)
 
-    def options(self, request, *args, **kwargs):
-        response = Response()
-        response['Access-Control-Allow-Origin'] = '*'
-        response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE, HEAD'
-        response['Access-Control-Allow-Headers'] = 'Authorization, Content-Type'
-        return response
-
-    def head(self, request, *args, **kwargs):
-        response = Response()
-        response['Access-Control-Allow-Origin'] = '*'
-        return response
-
 
 
 @login_required
