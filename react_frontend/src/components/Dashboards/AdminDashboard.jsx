@@ -184,7 +184,10 @@ function AdminDashboard() {
                 id="course"
                 className="form-control"
                 value={selectedCourse}
-                onChange={(e) => setSelectedCourse(e.target.value)}
+                onChange={(e) => {
+                  console.log("[Course Selection] New course selected:", e.target.value);
+                  setSelectedCourse(e.target.value);
+                }}
                 disabled={!selectedSemester}
               >
                 <option value="">-- Select Course --</option>
@@ -194,7 +197,7 @@ function AdminDashboard() {
                   </option>
                 ))}
               </select>
-            )}
+              )}
           </div>
           <div className="form-group mb-3">
             <label htmlFor="class">Select Class:</label>
